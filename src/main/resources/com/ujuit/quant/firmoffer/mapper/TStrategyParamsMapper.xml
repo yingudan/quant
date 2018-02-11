@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.TStrategyParams">
+	<resultMap id="BaseResultMap"
+		type="com.ujuit.quant.firmoffer.model.TStrategyParams">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="strategy_id" property="strategyId" jdbcType="INTEGER" />
+		<result column="param_name" property="paramName" jdbcType="VARCHAR" />
+		<result column="field_name" property="fieldName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, strategy_id, param_name, field_name
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_strategy_params
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="findParams" resultType="com.ujuit.quant.firmoffer.model.TStrategyParams"
+		parameterType="java.lang.String">
+		select tsp.id, tsp.strategy_id strategyId,
+		tsp.param_name paramName, tsp.field_name fieldName,tsp.default_val
+		defaultVal,
+		ts.strategy_name strategyName
+		from
+		t_strategy_params tsp
+		join
+		t_strategy ts ON ts.id=tsp.strategy_id
+		where ts.id=#{strategyId}
+	</select>
+
+	<select id="queryGroupIdByTestId" resultType="java.lang.Integer"
+		parameterType="java.lang.Integer">
+		SELECT id FROM t_param_group WHERE
+		backtest_id=#{testId}
+		ORDER BY start_time LIMIT 1
+	</select>
+
+	<select id="queryTsByGroupId" resultType="com.ujuit.quant.firmoffer.model.TStrategy">
+		SELECT
+		ts.strategy_name
+		strategyName, ts.status status,
+		ts.remote_ip remoteIp,ts.remote_port
+		remotePort
+		FROM
+		t_test_record
+		ttr
+		LEFT JOIN t_strategy ts ON ts.id =
+		ttr.strategy_id
+		JOIN
+		t_param_group tpg ON tpg.backtest_id = ttr.id
+		WHERE
+		tpg.id =#{groupId}
+		LIMIT 1
+	</select>
+
+
+	<select id="queryTradeNum" parameterType="map" resultType="java.lang.Integer">
+		SELECT count(sal.id) num
+		FROM
+		stock_applay_list sal
+		WHERE  sal.applay_user =#{subAccountId}
+		AND (sal.applay_status = 0 OR sal.applay_status = 2 )
+		AND sal.applay_type =#{applayType}
+	</select>
+
+
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.TStrategyParams">
+		insert into t_strategy_params
+		(id, strategy_id, param_name,
+		field_name)
+		values
+		(#{id,jdbcType=INTEGER}, #{strategyId,jdbcType=INTEGER},
+		#{paramName,jdbcType=VARCHAR},
+		#{fieldName,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.ujuit.quant.firmoffer.model.TStrategyParams">
+		update t_strategy_params
+		<set>
+			<if test="strategyId != null">
+				strategy_id = #{strategyId,jdbcType=INTEGER},
+			</if>
+			<if test="paramName != null">
+				param_name = #{paramName,jdbcType=VARCHAR},
+			</if>
+			<if test="fieldName != null">
+				field_name = #{fieldName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_strategy_params
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+</mapper>

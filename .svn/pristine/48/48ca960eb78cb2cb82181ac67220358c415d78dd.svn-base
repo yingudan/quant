@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.bus.model.TTestRecord" >
+    <resultMap id="BaseResultMap" type="com.ujuit.quant.bus.model.TTestRecord" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="strategy_id" property="strategyId" jdbcType="INTEGER" />
+        <result column="test_time" property="testTime" jdbcType="TIMESTAMP" />
+        <result column="his_data_start" property="hisDataStart" jdbcType="TIMESTAMP" />
+        <result column="his_data_end" property="hisDataEnd" jdbcType="TIMESTAMP" />
+        <result column="frequency" property="frequency" jdbcType="CHAR" />
+        <result column="ini_funding" property="iniFunding" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="CHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, strategy_id, test_time, his_data_start, his_data_end, frequency, ini_funding, 
+        type
+    </sql>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        <include refid="Base_Column_List" />
+        from t_test_record
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="com.ujuit.quant.bus.model.TTestRecord"  useGeneratedKeys="true" keyProperty="id">
+        insert into t_test_record (  strategy_id, test_time, 
+            his_data_start, his_data_end, frequency, 
+            ini_funding, type)
+        values (  #{strategyId,jdbcType=INTEGER}, #{testTime,jdbcType=TIMESTAMP}, 
+            #{hisDataStart,jdbcType=TIMESTAMP}, #{hisDataEnd,jdbcType=TIMESTAMP}, #{frequency,jdbcType=CHAR}, 
+            #{iniFunding,jdbcType=INTEGER}, #{type,jdbcType=CHAR})
+    </insert>
+
+    <update id="update" parameterType="com.ujuit.quant.bus.model.TTestRecord" >
+        update t_test_record
+        <set >
+            <if test="strategyId != null" >
+                strategy_id = #{strategyId,jdbcType=INTEGER},
+            </if>
+            <if test="testTime != null" >
+                test_time = #{testTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="hisDataStart != null" >
+                his_data_start = #{hisDataStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="hisDataEnd != null" >
+                his_data_end = #{hisDataEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="frequency != null" >
+                frequency = #{frequency,jdbcType=CHAR},
+            </if>
+            <if test="iniFunding != null" >
+                ini_funding = #{iniFunding,jdbcType=INTEGER},
+            </if>
+            <if test="type != null" >
+                type = #{type,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer" >
+        delete from t_test_record
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+</mapper>

@@ -1,0 +1,96 @@
+/*重写head*/
+.scroll .menu .on,.scroll .menu a:hover{
+	
+	color:#008DFF;border-color:#008DFF;
+}
+.header .logo{
+	margin-right:110px;	
+}
+/*banner*/
+.bg{
+	color: #fff;
+	text-align: left;
+}
+.bg .t1{
+	font-size: 36px;
+	height: 36px;
+	line-height: 36px;
+	
+	margin-top: 340px;
+	width:800px;
+}
+.bg .subt1{
+	font-size: 18px;
+	height: 18px;
+	line-height: 18px;
+	text-align:left;
+	margin-top: 28px;
+	width: 800px;
+	font-weight:100;
+}
+.bg a{
+	display:block;
+	width:154px;
+	height:48px;
+	line-height:48px;
+	margin-top:48px;
+	text-align:center;
+	font-size:18px;
+	color:#fefefe;
+	background: url(../../../images/frontend/strategy/s_btn_154.png) no-repeat center center;
+}
+.bg .itemw{
+	height: 723px;
+	overflow: hidden;
+	background: url(../../../images/frontend/strategy/s_banner.png) no-repeat center center;
+}
+
+/*下面四个图的显示*/
+.advantage {
+	overflow: hidden;
+	height: 560px;
+	background:#fff;
+}
+.advantage .ptitle{
+	font-size: 32px;
+	line-height: 32px;
+	height: 32px;
+	text-align: center;
+	color: #fff;
+	margin-top: 140px;
+	margin-bottom: 128px;
+}
+.advantage ul{
+	width:1268px;
+}
+.advantage li{
+	float: left;
+	color: #fff;
+	overflow: hidden;
+	width:222px;
+	margin-right:95px;
+}
+
+.advantage img{
+	width:100px;
+	height:100px;
+	margin-left:60px;
+	margin-top:120px;
+	
+}
+.advantage .title{
+	text-align: center;
+	color: #414753;
+	font-size:18px;
+	height: 18px;
+	line-height: 18px;
+	margin-top:18px;
+}
+.advantage .content{
+	text-align: left;
+	font-size: 16px;
+	line-height: 22px;
+	font-size:14px;
+	color:#414753;
+	margin-top:15px;
+}

@@ -1,0 +1,557 @@
+body{
+	min-width:1000px;
+	min-height:560px;
+	background:url(../../images/frontend/login/login_bg.png) no-repeat center center;
+	overflow: hidden;
+	height:100%;
+    width:100%;
+    overflow: hidden;
+    background-size:cover;
+}
+.header .mindex li {
+    width: 70px;
+    border: none;
+}
+.header .logo{
+	margin-right:110px;
+}
+.loginboxc{
+	overflow:hidden;
+}
+
+.loginboxc .right{
+	margin:0 auto;
+	width:463px;
+}
+.loginboxc .opbox{
+
+	width:463px;
+	height:470px;
+	
+	text-align:center;
+	overflow:hidden;
+	position:fixed;
+	 top: 50%;
+    left: 50%;
+    margin-top: -254px;
+    margin-left: -221px;
+}
+.opbox p{
+	width:442px;
+	margin:0 auto;
+	text-align:center;
+	color:#fff;
+}
+.opbox .title{
+	color:#fff;
+	font-size:20px;
+	height:22px;
+	line-height:22px;
+	margin-top:22px;
+}
+.opbox .title2{
+	color:#fff;
+	font-size:14px;
+	height:16px;
+	line-height:16px;
+	margin-top:8px;
+	margin-bottom:28px;
+}
+
+.opbox  .loginform{
+	overflow:hidden;
+	width: 463px;
+	margin:0 auto;
+	height:376px;
+	background:url(../../images/frontend/login/login_box.png) no-repeat center center;
+}
+.opbox  .loginform input{
+	width:344px;
+	height:48px;
+	
+	padding-left:18px;
+	border-radius:3px;
+	border:1px solid #008dff;
+	background:#fcfdfe;
+	font-size:14px;
+	color:#333;
+}
+.loginboxc .opboxcode{
+	height:565px;
+	 margin-top: -283px;
+}
+.opboxcode  .loginform{
+	overflow:hidden;
+	width: 463px;
+	margin:0 auto;
+	height:493px;
+	background:url(../../images/frontend/login/newuser_bg.png) no-repeat center -30px;
+}
+.opbox  .loginform:input::-webkit-input-placeholder{color:#999;}
+.opbox  .loginform #uname{
+	margin-top:53px;
+}
+.opbox  .loginform #pword{
+	margin-top:21px;
+}
+.opbox .error{
+	color:#e80000;
+	text-align:left;
+	height:20px;
+	width: 364px;
+}
+.opbox .lforget{
+	overflow:hidden;
+	width:328px;
+}
+.opbox .lforget input{
+	margin-top:5px;
+}
+
+.opbox .lforget span{
+	display:block;
+	float:left;
+	height:22px;
+	line-height:22px;
+	width:120px;
+	font-size:14px;
+	text-align:left;
+}
+.opbox .lforget span.input{
+	width:16px;	
+}
+.opbox .lforget a{
+	display:block;
+	width:120px;
+	float:right;
+	color:#008dff;
+	font-size:14px;
+	text-align:right;
+	margin-top:18px;
+}
+
+.opbox .submit{
+	
+	width:364px;
+}
+.opbox .submit a{
+	display:block;
+	height:50px;
+	line-height:50px;
+	text-align:center;
+	width:364px;
+	margin:0 auto;
+	color:#fff;
+	font-size:16px;
+	background:url(../../images/frontend/login/login_btn.png) no-repeat center center;
+}
+.opbox .lregister{
+	height:64px;
+	line-height:64px;
+	font-size:18px;
+	border:1px solid #008dff;
+	width:362px;
+	text-align:center;
+	height:48px;
+	border-radius:6px;
+	line-height:48px;
+	margin-top:20px;
+}
+.opbox .code{
+	display:none;
+	overflow:hidden;
+	width: 364px;
+    margin: 0 auto;	
+    
+    margin-bottom:20px;
+}
+.opbox .code input{
+	width:203px;
+	height:48px;
+	
+	padding-left:18px;
+	margin-bottom:3px;
+	border-radius:3px;
+	border:1px solid #d9dce9;
+	background:#fcfdfe;
+	font-size:14px;
+	color:#999999;
+	float:left;
+}
+.opbox .code img{
+	height:50px;
+	width:104px;
+	float:right;
+}
+.opbox .lregister a{
+	color:#008dff;
+}
+.loginboxc .opboxstatic{
+	position:static;
+	margin:0 auto;
+	margin-top:150px;
+}	
+.loginboxc .opboxstatic .footer{
+	position:static;
+	margin-top:150px;
+}
+.footer{
+	font-size:14px;
+	color:#999999;
+	text-align:center;
+	width: 100%;
+	margin-bottom:20px;
+}
+/*注册 重置密码*/
+.regbox{
+	overflow:hidden;
+}
+.regbox .regbg{
+
+}
+.regbox .item{
+	position:relative;
+	height:572px;
+	top:0;
+}
+.regbox .formbox{
+	position:fixed;
+	width:466px;
+	width:464px;
+	top:50%;
+	left:50%;
+	margin-top:-221px;
+	margin-left:-232px
+}
+.regbox  .formboxc{
+	position:static;
+	margin:0 auto;
+	margin-top:150px;
+}
+.regbox .progtop label{
+	display:block;
+	width:50px;
+	height:50px;
+	float:left;
+}
+.regbox .progtop label.one,.regbox .progtop label.two{
+	border-radius:50%;
+	line-height:50px;
+	text-align:center;
+	font-size:14px;
+	color:#fff;
+	background:#3a404b;
+}
+.regbox .progtop label.hr{
+	height:25px;
+	border-bottom:1px solid #ccc;
+	margin:auto 5px;
+	width:175px;
+}
+.regbox .progtop label.on{
+	background:#008dff;
+}
+.regbox .formbox .title{
+	text-align:center;
+	font-size:36px;
+	line-height:36px;
+	color:#fff;
+}
+.regbox .progtop{
+	width:286px;
+	margin:0 auto;
+	margin-top:43px;
+}
+.regbox .progbottom{
+	clear:both;
+	width:358px;
+	margin:0 auto;
+	font-size:14px;
+	color:#333333;
+	margin-top:13px;
+	overflow:hidden;
+}
+.regbox .progbottom .one{
+	width:120px;
+	text-align:center;
+	float:left;
+	display:block;
+	color:#fff;
+}
+.regbox .progbottom .two{
+	width:120px;
+	text-align:center;
+	float:right;
+	color:#fff;
+}
+
+.regbox .step1,.regbox .step2{
+	
+	width:330px;
+	margin:0 auto;
+}
+.regbox .step2{
+	display:none;
+}
+.regbox .step1{
+	margin-top:18px;
+	overflow:hidden;
+	width:464px;
+	height:298px;
+	text-align:center;
+	background:url(../../images/frontend/login/forget_bg.png) no-repeat center center;
+}
+.regbox .step1 input,.regbox .step2 input{
+	width:346px;
+	height:48px;
+	
+	padding-left:18px;
+	overflow:hidden;
+	border-radius:3px;
+	border:1px solid #008dff;
+	background:#fcfdfe;
+	font-size:14px;
+	color:#333;
+	margin:0 auto;
+	margin-top:53px;
+}
+.regbox .step1 input::-webkit-input-placeholder,.regbox .step2 input::-webkit-input-placeholder{color:#999;}
+.regbox .step1 #phonenum{
+	margin-top:20px;
+}
+.forget .step1 #phonenum{
+	margin-top:53px;
+}
+.regbox .step1 .code{
+	width:204px;
+	float:left;
+	margin-top:0;
+}
+.regbox .step1>div{
+	overflow:hidden;
+	width:364px;
+	text-align:center;
+	margin:0 auto;
+}
+.regbox .error{
+	clear:both;
+	color:#e80000;
+	height:18px;
+	text-align:left;
+	width:364px;
+	margin:0 auto;
+	overflow:hidden;
+}
+.regbox .getcode{
+	font-size:14px;
+	color:#fff;
+	width:112px;
+	height:35px;
+	line-height:35px;
+	text-align:center;
+	float:right;
+	background:#fb7203;
+	margin-top:8px;
+	background:url(../../images/frontend/login/getcode.png) no-repeat center center;
+}
+.regbox  .btn{
+	display:block;
+	width:364px;
+	height:50px;
+	line-height:50px;
+	color:#fff;
+	font-size:16px;
+	margin:0 auto;
+}
+.regbox .step1  .btn{
+	margin-top:0;
+	background:url(../../images/frontend/login/login_btn.png) no-repeat center center;
+}
+.regbox .step2  .btn{
+	margin-top:0px;
+	background:url(../../images/frontend/login/login_btn.png) no-repeat center center;
+}
+
+.regbox .step2{
+	width:464px;
+	height:298px;
+	text-align:center;
+	background:url(../../images/frontend/login/forget_bg.png) no-repeat center center;
+	margin-top:38px;
+}
+.regbox .step2 #password2{
+	margin-top:20px;
+}
+.regbox .step2 input:first-child{
+	
+}
+
+
+/*获取验证码弹出层*/
+.popcode{
+	display:none;
+	height:100%;
+	width:100%;
+	background:#b2b2b2;
+	position:fixed;
+	top:0;
+	left:0;
+	min-width:1200px;
+	 filter:alpha(opacity=50);  
+      -moz-opacity:0.5;  
+      -khtml-opacity: 0.5;  
+      opacity: 0.5;
+}
+.popbox{
+	display:none;
+	height:203px;
+	width:388px;
+	position:fixed;
+	left:50%;
+	top:50%;
+	margin-top:-102px;
+	margin-left:-199px;
+	background:#fff;
+	border-radius:15px;
+}
+.popbox .title{
+	height:70px;
+	line-height:70px;
+	text-align:center;
+	font-size:18px;
+	marign-bottom:6px;
+}
+.popbox div{
+	overflow:hidden;
+	width:330px;
+	margin:0 auto;
+}
+.popbox img{
+	float:right;
+	width:104px;
+	height:50px;
+}
+.popbox input{
+	width:203px;
+	height:48px;
+	
+	text-indent:18px;
+	overflow:hidden;
+	border-radius:3px;
+	border:1px solid #d9dce9;
+	background:#fcfdfe;
+	font-size:14px;
+	color:#999999;
+	float:left;
+}
+.popbox .btn{
+	margin-top:43px;
+	text-align:center;
+}
+.popbox a{
+	color:#008dff;
+	font-size:14px;
+}
+.popbox a:first-child{
+	margin-right:11px;
+}
+
+.footer{
+	width:100%;
+	background:none;	
+	min-width:1000px;
+	position:fixed;
+	height:14px;
+	line-height:14px;
+	bottom:15px;
+}
+.regbox .big_bg{
+	height:488px;
+	background:url(../../images/frontend/login/newuser_bg.png) no-repeat center center;
+}
+.big_bg .code1{
+	overflow: hidden;
+    width: 364px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+.big_bg  .code1 input{
+	width: 203px;
+    height: 48px;
+   
+    padding-left: 18px;
+    margin-bottom: 3px;
+    border-radius: 3px;
+    border: 1px solid #d9dce9;
+    background: #fcfdfe;
+    font-size: 14px;
+    color: #999999;
+    float: left;
+    margin-top:0;
+}
+.big_bg .code1 img {
+    height: 50px;
+    width: 104px;
+    float: right;
+}
+.regbox .big_bg .codex{
+	margin-top:20px;
+}
+.regbox .big_bg .btn{
+	margin-top:57px;
+}
+.big_bg .proticl{
+	width:364px;
+	margin:0 auto;
+	height:18px;
+	line-height:18px;
+	text-align:left;
+	color:#fff;
+}
+.big_bg .proticl i{
+	cursor:pointer;
+	display:block;
+	height:14px;
+	width:14px;
+	margin-right:14px;
+	float:left;
+	margin-top:2px;
+	background:url(../../images/frontend/login/s_unon.png) no-repeat center center;
+}
+.big_bg .proticl i.on{
+	background:url(../../images/frontend/login/s_on.png) no-repeat center center;
+}
+.big_bg .proticl a{
+	color:#008dff;
+}
+/*注册重新*/
+.regbox2 .formbox{
+	height:656px;
+	width:464px;
+	position:fixed;
+	top:50%;
+	left:50%;
+	margin-top:-328px;
+	margin-left:-232px;
+}
+.regbox2 .formboxc{
+	position:static;
+	margin:0 auto;
+	margin-top:150px;
+	
+}
+/*重写header*/
+.header .userbox a{
+	background:none;
+	float:left;
+	width:30px;
+}
+.header .userbox a.on{
+	color:#008dff;
+}
+.header .userbox span{
+	float:left;
+	padding:0 10px;
+}
+
+

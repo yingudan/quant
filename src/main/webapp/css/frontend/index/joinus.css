@@ -1,0 +1,75 @@
+/*重写头部*/
+.header .logo{
+	margin-right:70px;
+}
+/*banner*/
+.bg{
+	color: #fff;
+	text-align: center;
+}
+.bg .itemw{
+	height:604px;
+	overflow: hidden;
+	background: url(../../../images/frontend/index/joinus-bg.png) no-repeat center center;
+}
+
+.bg .cancover{
+	width:1200px;
+	margin:0 auto;
+}
+.bg .jcover{
+	float:right;
+	margin-top:230px;
+}
+/*招聘内容*/
+.toptitle{
+	
+}
+.toptitle p{
+	width:100%;
+	text-align:center;
+}
+.toptitle p.ones{
+	border-bottom:1px solid #eee;
+	font-size:30px;
+	color:#0c253d;
+	height:84px;
+	line-height:84px;
+}
+.toptitle p.two{
+	overflow:hidden;
+	font-size:18px;
+	color:#0c253d;
+	padding-top:19px;
+	line-height:30px;
+	padding-bottom:35px;
+}
+.item .itemn{
+	margin-bottom:195px;
+}
+.itemn .ztitle{
+	margin-top:60px;
+	background: url(../../../images/frontend/index/joinus-lefttitle.png) no-repeat center left;
+}
+.itemn .ztitle p{
+	color:#2f2f2f;
+	font-size:18px;
+	text-indent:27px;
+	height:32px;
+	line-height:32px;
+}
+.itemn .zcontent{
+	margin-top:18px;
+}
+.itemn .zcontent p{
+	color:#2f2f2f;
+	font-size:14px;
+	margin-left:8px;
+	line-height:28px;
+}
+.itemn .zcontent .subtitle{
+	color:#2f2f2f;
+	font-size:14px;
+	font-weight:600;
+	
+}

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.bus.model.TSubAccount" >
+    <resultMap id="BaseResultMap" type="com.ujuit.quant.bus.model.TSubAccount" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="param_group_id" property="paramGroupId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="money_total" property="moneyTotal" jdbcType="DECIMAL" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="lock_status" property="lockStatus" jdbcType="CHAR" />
+        <result column="surplus_money" property="surplusMoney" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, param_group_id, user_id, money_total, create_time, lock_status, surplus_money
+    </sql>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        <include refid="Base_Column_List" />
+        from t_sub_account
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+	
+	
+	<!-- 为了防止报错 -->
+	<select id="findSubAccount" resultType="com.ujuit.quant.bus.model.TSubAccount"  parameterType="map">
+	SELECT tsa.id, tsa.param_group_id  paramGroupId, tsa.user_id userId, tsa.money_total moneyTotal, 
+	tsa.create_time createTime,
+	tsa.lock_status lockStatus, tsa.surplus_money  surplusMoney
+	FROM
+	t_sub_account tsa
+	WHERE
+	tsa.param_group_id IN (
+	SELECT
+	tpg.id
+	FROM
+	t_param_group tpg
+	WHERE
+	tpg.backtest_id =#{testId}
+	<if test="groupId!=null and groupId!=''" >  
+		AND tpg.id=#{groupId}
+	</if>
+	)
+	ORDER BY create_time DESC LIMIT 1
+	</select>
+	
+    <insert id="insert" parameterType="com.ujuit.quant.bus.model.TSubAccount" >
+        insert into t_sub_account (id, param_group_id, user_id, 
+            money_total, create_time, lock_status, 
+            surplus_money)
+        values (#{id,jdbcType=INTEGER}, #{paramGroupId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+            #{moneyTotal,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{lockStatus,jdbcType=CHAR}, 
+            #{surplusMoney,jdbcType=DECIMAL})
+    </insert>
+
+    <update id="update" parameterType="com.ujuit.quant.bus.model.TSubAccount" >
+        update t_sub_account
+        <set >
+            <if test="paramGroupId != null" >
+                param_group_id = #{paramGroupId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null" >
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="moneyTotal != null" >
+                money_total = #{moneyTotal,jdbcType=DECIMAL},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lockStatus != null" >
+                lock_status = #{lockStatus,jdbcType=CHAR},
+            </if>
+            <if test="surplusMoney != null" >
+                surplus_money = #{surplusMoney,jdbcType=DECIMAL},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.Integer" >
+        delete from t_sub_account
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+</mapper>

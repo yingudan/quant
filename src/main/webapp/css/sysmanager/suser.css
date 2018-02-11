@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+.form{margin:30px 0;border:1px solid #DDD;padding:10px 10px 30px 10px;}
+.form .comm_input_box{margin:15px 0;}
+.form .hr{border-top: 1px dotted #e8e8e8;width:100%;position:relative;left:-10px;height:10px;}
+.addbtnbox{padding:10px 0;text-align:center;}
+.addbtnbox span{min-width:120px;}
+#roleStr .isSystem{display:none;}
+#roleStr .noSystem{display:none;}

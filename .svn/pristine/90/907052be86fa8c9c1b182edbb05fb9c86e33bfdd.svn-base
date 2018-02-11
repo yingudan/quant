@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.user.model.TUserModel" >
+
+	<cache eviction="LRU"    size="204800" readOnly="true"  />  
+
+    <resultMap id="BaseResultMap" type="com.ujuit.quant.user.model.TUserModel" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="username" property="userName" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="secret_key" property="secretKey" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, username, password, secret_key
+    </sql>
+    
+    <select id="queryUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select  id from
+		  t_user
+		where username = #{callPhone,jdbcType=VARCHAR}
+	</select>
+    
+    <select id="queryDataOfferUser" resultType="com.ujuit.quant.firmoffer.dto.DataOfferUserInfoDto" parameterType="java.lang.Integer" flushCache="true"  >
+      SELECT user_name userName,access_key accessKey,callphone callPhone FROM t_user  
+	        where id = #{id,jdbcType=INTEGER}
+    </select>
+    
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select 
+        <include refid="Base_Column_List" />
+        from t_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    	
+    <select id="queryUserInfo" resultType="com.ujuit.quant.firmoffer.dto.UserInfoDto"
+    	 parameterType="java.lang.Integer">
+		SELECT
+		tu.secret_key secretKey,
+		tu.user_name userName,
+		ts.StrategyNum,
+		tu.callphone callPhone,
+		tu.introduce introduce
+		FROM
+		t_user tu LEFT JOIN (SELECT count(id) StrategyNum,user_id FROM
+		t_strategy GROUP BY user_id) ts ON tu.id=ts.user_id
+		WHERE tu.id=#{userId}
+    </select>	
+    	
+    <select id="selectByPhoneNum" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select 
+        <include refid="Base_Column_List" />
+        from t_user
+        where username = #{userName,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" flushCache="true" parameterType="com.ujuit.quant.user.model.TUserModel" >
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID() AS id
+		</selectKey>
+        insert into t_user (id, username, password, 
+            secret_key,user_name)
+        values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+            #{secretKey,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR})
+    </insert>
+    
+    <update id="updateTUser"  flushCache="true"  parameterType="com.ujuit.quant.user.model.TUser" >
+    		 update t_user
+    		 <set >
+    		 	<if test="userName!=null and userName!=''">
+    		 			user_name= #{userName,jdbcType=VARCHAR},
+    		 	</if>
+    		 	<if test="introduce!=null and introduce!=''">
+    		 			introduce = #{introduce,jdbcType=VARCHAR},
+    		 	</if>
+   	   	 </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <update id="update" flushCache="true" parameterType="com.ujuit.quant.user.model.TUserModel" >
+        update t_user
+        <set >
+            <if test="userName != null" >
+                username = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="secretKey != null" >
+                secret_key = #{secretKey,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    
+
+    <delete id="delete" parameterType="java.lang.Integer" flushCache="true"  >
+        delete from c_data_type
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+</mapper>

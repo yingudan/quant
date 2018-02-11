@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.TMinIncome">
+
+	<!-- 根据 子账户数组 批量删除 -->
+	<delete id="batchDeleteBySubAccountIdList" parameterType="java.util.List">
+		DELETE FROM t_min_income
+		WHERE sub_account_id in
+		<foreach item="id" collection="list" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="findHisTMinIncomeList"  resultType="com.ujuit.quant.firmoffer.model.TMinIncome" parameterType="map">
+	  	SELECT
+	ins.accumulated_return  accumulatedReturn,
+	ins.logarithmic_return logarithmicReturn, 
+	ins.relative_return relativeReturn,
+	ins.total_benchmark benchmarkReturn,
+	ins.benchmark_sz50 benchmarkSz50,
+	ins.total_benchmark_sz50 totalBenchmarkSz50,
+	ins.relative_return_sz50 relativeReturnSz50,
+	ins.benchmark_zz500 benchmarkZz500,
+	ins.total_benchmark_zz500 totalBenchmarkZz500,
+	ins.relative_return_zz500 relativeReturnZz500,
+	ins.time createTime
+	FROM
+	income_situation ins   
+	join (
+	SELECT
+			tsa.id
+		FROM
+			t_sub_account tsa
+		JOIN t_param_group tpg ON tsa.param_group_id = tpg.id
+		LEFT JOIN t_test_record ttr ON ttr.id = tpg.backtest_id
+		WHERE
+			ttr.id = #{testId}
+		AND ttr.strategy_id=#{strategyId}	
+		<if test="groupId!=null and groupId!=''">
+			AND   tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			AND   tpg.test_status=#{status}
+		</if>
+
+			) temp on ins.sub_account_id=temp.id
+			where 1=1
+			
+						<if test="startTime !=null ">
+        	 <![CDATA[ and ins.time  >=  #{startTime}  ]]>
+			</if>
+			<if test="endTime !=null ">
+     	    <![CDATA[ and ins.time <=  #{endTime}  ]]>
+			</if>
+		ORDER BY TIME
+	</select>
+
+	<select id="findAllTMinIncomeList" resultType="com.ujuit.quant.firmoffer.model.TMinIncome"
+		parameterType="map" >
+ 	SELECT ins.logarithmic_return,ins.create_time 
+	createTime,ins.relative_return relativeReturn,
+	ins.accumulated_return accumulatedReturn,
+	ins.total_benchmark benchmarkReturn,
+	ins.benchmark_sz50 benchmarkSz50,
+	ins.total_benchmark_sz50 totalBenchmarkSz50,
+	ins.relative_return_sz50 relativeReturnSz50,
+	ins.benchmark_zz500 benchmarkZz500,
+	ins.total_benchmark_zz500 totalBenchmarkZz500,
+	ins.relative_return_zz500 relativeReturnZz500
+	FROM income_situation ins JOIN ( SELECT max(ins.id)
+	id,DATE_FORMAT(ins.create_time,'%Y%m%d') days
+	FROM income_situation ins
+	LEFT JOIN t_sub_account tsa on tsa.id=ins.sub_account_id
+	JOIN
+	t_param_group
+	tpg ON tsa.param_group_id=tpg.id
+	LEFT JOIN t_test_record
+	ttr on
+	ttr.id=tpg.backtest_id
+		where ttr.id=#{testId}	and ttr.strategy_id=#{strategyId}
+		<if test="groupId!=null and groupId!=''">
+			AND   tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			AND   tpg.test_status=#{status}
+		</if>
+	group by days
+	) tb ON tb.id=ins.id 
+	<!-- 这是分割线 -->
+	<!-- SELECT ins.logarithmic_return logarithmicReturn,ins.create_time
+	createTime,
+	ins.relative_return relativeReturn,ins.accumulated_return
+	accumulatedReturn,
+	ins.benchmark_return benchmarkReturn
+	FROM t_min_income ins JOIN ( SELECT max(ins.id)
+	id,DATE_FORMAT(ins.create_time,'%Y%m%d') days
+	FROM t_min_income ins
+	LEFT JOIN t_sub_account tsa on tsa.id=ins.sub_account_id
+	JOIN
+	t_param_group
+	tpg ON tsa.param_group_id=tpg.id
+	LEFT JOIN t_test_record
+	ttr on
+	ttr.id=tpg.backtest_id
+	where ttr.id=#{testId}	and ttr.strategy_id=#{strategyId}
+		<if test="groupId!=null and groupId!=''">
+			AND   tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			AND   tpg.test_status=#{status}
+		</if>
+	group by days
+	) tb ON tb.id=ins.id -->
+	</select>
+	
+	<select id="findDayMaxMinIncome"  resultType="com.ujuit.quant.firmoffer.model.TMinIncome"
+		parameterType="map" >
+		SELECT ins.logarithmic_return,ins.create_time 
+	createTime,ins.relative_return relativeReturn,
+	ins.accumulated_return accumulatedReturn,
+	ins.total_benchmark benchmarkReturn,
+	ins.benchmark_sz50 benchmarkSz50,
+	ins.total_benchmark_sz50 totalBenchmarkSz50,
+	ins.relative_return_sz50 relativeReturnSz50,
+	ins.benchmark_zz500 benchmarkZz500,
+	ins.total_benchmark_zz500 totalBenchmarkZz500,
+	ins.relative_return_zz500 relativeReturnZz500
+	FROM income_situation ins JOIN ( SELECT max(ins.id)
+	id,DATE_FORMAT(ins.create_time,'%Y%m%d') days
+	FROM income_situation ins
+	LEFT JOIN t_sub_account tsa on tsa.id=ins.sub_account_id
+	JOIN
+	t_param_group
+	tpg ON tsa.param_group_id=tpg.id
+	LEFT JOIN t_test_record
+	ttr ON ttr.id=tpg.backtest_id
+		where ttr.id=#{testId}	and ttr.strategy_id=#{strategyId}
+		<if test="groupId!=null and groupId!=''">
+			AND   tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			AND   tpg.test_status=#{status}
+		</if>
+	group by days
+	) tb ON tb.id=ins.id 
+	ORDER BY ins.create_time DESC LIMIT 1
+	</select>
+	
+
+	<select id="findTMinMoeny" resultType="com.ujuit.quant.firmoffer.model.TMinIncome" parameterType="map">
+	SELECT
+	tmi.money money
+	FROM
+	t_min_income tmi
+	LEFT JOIN t_sub_account tsa ON tsa.id = tmi.sub_account_id
+	JOIN t_param_group tpg ON tsa.param_group_id = tpg.id
+	LEFT JOIN t_test_record ttr ON ttr.id = tpg.backtest_id
+	where ttr.id=#{testId}	and ttr.strategy_id=#{strategyId}
+	ORDER BY
+	tmi.create_time DESC
+	LIMIT 1
+	</select>
+	
+	<select id="findTMinIncomeList" resultType="com.ujuit.quant.firmoffer.model.TMinIncome"
+		parameterType="map">
+	SELECT tmi.logarithmic_return logarithmicReturn,tmi.create_time
+	createTime,
+	tmi.relative_return relativeReturn,tmi.accumulated_return
+	accumulatedReturn,
+	tmi.benchmark_return benchmarkReturn,
+	tmi.total_benchmark_sz50  totalBenchmarkSz50,
+	tmi.relative_return_sz50  relativeReturnSz50,
+	tmi.total_benchmark_zz500 benchmarkZz500,
+	tmi.relative_return_zz500 relativeReturnZz500
+	FROM t_min_income tmi
+	LEFT JOIN t_sub_account tsa on tsa.id=tmi.sub_account_id
+	JOIN
+	t_param_group tpg ON tsa.param_group_id=tpg.id
+	LEFT JOIN t_test_record
+	ttr on ttr.id=tpg.backtest_id
+	where ttr.id=#{testId}	and ttr.strategy_id=#{strategyId}
+		<if test="groupId!=null and groupId!=''">
+			AND   tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			AND   tpg.test_status=#{status}
+		</if>
+	</select>
+
+<select id="findLimitIncome"  resultType="com.ujuit.quant.firmoffer.model.TMinIncome"
+		parameterType="map">
+	SELECT tmi.logarithmic_return logarithmicReturn,tmi.create_time
+	createTime,
+	tmi.relative_return relativeReturn,tmi.accumulated_return
+	accumulatedReturn,
+	tmi.benchmark_return benchmarkReturn
+	FROM t_min_income tmi
+	LEFT JOIN t_sub_account tsa on tsa.id=tmi.sub_account_id
+	JOIN
+	t_param_group tpg ON tsa.param_group_id=tpg.id
+	LEFT JOIN t_test_record
+	ttr on ttr.id=tpg.backtest_id
+	where ttr.id=#{testId}	and ttr.strategy_id=#{strategyId}
+		<if test="groupId!=null and groupId!=''">
+			AND   tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			AND   tpg.test_status=#{status}
+		</if>
+		ORDER BY tmi.create_time DESC LIMIT 1
+</select>
+
+
+<!-- tmi.accumulated_return    -->
+	<select id="findTMinIncomeListByTime" resultType="com.ujuit.quant.firmoffer.model.TMinIncome"
+		parameterType="map">
+	SELECT tmi.logarithmic_return logarithmicReturn,tmi.create_time
+	createTime,
+	tmi.relative_return relativeReturn,tmi.accumulated_return accumulatedReturn,
+	tmi.benchmark_return benchmarkReturn,
+	tmi.total_benchmark_sz50   totalBenchmarkSz50,
+	tmi.relative_return_sz50	relativeReturnSz50,
+	tmi.total_benchmark_zz500   totalBenchmarkZz500,
+	tmi.relative_return_zz500   relativeReturnZz500
+	FROM t_min_income tmi
+	LEFT JOIN t_sub_account tsa on tsa.id=tmi.sub_account_id
+	JOIN
+	t_param_group tpg ON tsa.param_group_id=tpg.id
+	LEFT JOIN t_test_record
+	ttr on ttr.id=tpg.backtest_id
+	where ttr.id=#{testId}	and ttr.strategy_id=#{strategyId}
+		<if test="groupId!=null and groupId!=''">
+			AND   tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			AND   tpg.test_status=#{status}
+		</if>
+		<if test="startTime!=null">
+			and tmi.create_time  &gt;=  #{startTime} 
+		</if>
+		<if test="endTime!=null">
+     		 and  tmi.create_time    &lt;=  #{endTime}  
+		</if>
+	</select>
+</mapper>

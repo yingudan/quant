@@ -1,0 +1,24 @@
+# mysql config
+jdbc3.driver.class=com.mysql.jdbc.Driver
+jdbc3.protocol=jdbc:mysql
+
+jdbc3.param=autoReconnect=true&useUnicode=true&characterEncoding=utf8&useNewIO=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+
+
+
+
+jdbc3.username=root
+jdbc3.password=123456
+jdbc3.host=ujua.f3322.net
+jdbc3.port=3333
+jdbc3.database=futures-order
+
+#jdbc.username=quant
+#jdbc.password=zYAphP92HAkP
+#jdbc.host=120.25.215.132
+#jdbc.port=3306
+#jdbc.database=dealserver
+
+
+
+

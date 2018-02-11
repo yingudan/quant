@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.TStrategy">
+	<resultMap id="BaseResultMap" type="com.ujuit.quant.firmoffer.model.TStrategy">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="strategy_name" property="strategyName"
+			jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="CHAR" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="remote_ip" property="remoteIp" jdbcType="TIMESTAMP" />
+		<result column="remote_port" property="remotePort" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, strategy_name, user_id, status,
+		create_date,remote_ip,remote_port
+	</sql>
+
+	<select id="queryTStrategyListByUserId" parameterType="map"
+		resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_strategy WHERE user_id=#{userId} and status=3
+	</select>
+
+	<select id="findRunTestId" parameterType="map" resultType="java.lang.Integer">
+		SELECT ttr.id FROM
+		t_test_record ttr LEFT JOIN t_strategy ts ON
+		ts.id=ttr.strategy_id
+		JOIN t_param_group
+		tpg ON tpg.backtest_id=ttr.id
+		where tpg.test_status=1 AND ttr.strategy_id=#{strategyId} AND
+		ttr.type=#{type}
+		LIMIT 1
+	</select>
+
+
+	<select id="findLatestId" parameterType="map" resultType="java.lang.Integer">
+		SELECT
+		ttr.id
+		FROM
+		t_test_record ttr
+		LEFT JOIN t_strategy ts ON ts.id =
+		ttr.strategy_id
+		JOIN t_param_group tpg ON tpg.backtest_id = ttr.id
+		WHERE
+		ttr.strategy_id =#{strategyId} AND
+		ttr.type = #{type}
+		ORDER BY
+		ttr.id DESC LIMIT 1
+	</select>
+
+	<select id="queryTStrategyByUserId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM t_strategy WHERE user_id=#{userId}
+	</select>
+
+
+	<select id="findTSisAttention" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		SELECT CASE WHEN a.sum >0 THEN 1 else 0 END num FROM (
+		SELECT count(id)
+		sum FROM t_wechat_attention
+		where
+		strategy_id=#{strategyId}
+		) a
+	</select>
+
+
+	<select id="queryUserIsAttenTion" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		SELECT count(id) num FROM t_wechat_attention WHERE
+		user_id=#{userId}
+	</select>
+
+
+	<select id="findTStrategyDto" parameterType="map"
+		resultType="com.ujuit.quant.firmoffer.dto.TStrategyDto">
+		SELECT ts.strategy_name strategyName,ts.status,ttr.his_data_start
+		startTime,ttr.his_data_end endTime,ttr.ini_funding iniFunding,
+		ttr.frequency,tpg.test_status testStatus,tpg.id paramId,tpg.id
+		paramId,tpg.grade
+		FROM t_test_record ttr LEFT JOIN t_strategy ts ON
+		ts.id=ttr.strategy_id
+		JOIN t_param_group tpg ON tpg.backtest_id=ttr.id
+		<where>
+			ttr.strategy_id=#{strategyId} AND ttr.id=#{testId}
+			<if test="groupId!=null and groupId!=''">
+				AND tpg.id=#{groupId}
+			</if>
+		</where>
+		ORDER BY tpg.id desc LIMIT 1
+	</select>
+
+	<select id="findRecordParamlist" parameterType="map"
+		resultType="com.ujuit.quant.firmoffer.dto.RecordParamDto">
+		SELECT trp.param_value paramValue,trp.param_name paramName,
+		tpg.id
+		paramId,trp.field_name fieldName
+		FROM t_record_param trp JOIN
+		t_param_group tpg ON tpg.id=trp.group_id
+		<where>
+			tpg.backtest_id=#{testId}
+			<if test="groupId !=null and  groupId!=''">
+				and tpg.id=#{groupId}
+			</if>
+			<if test="status!=null and status!=''">
+				and tpg.test_status=#{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="findParamGrouplist" parameterType="map"
+		resultType="com.ujuit.quant.firmoffer.model.TParamGroup">
+		SELECT id,test_status testStatus,grade FROM t_param_group
+		WHERE backtest_id=#{testId}
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_strategy
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_strategy
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="selectByTestRecordId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select ts.id, ts.strategy_name, ts.user_id, ts.status,
+		ts.create_date
+		from t_strategy ts
+		left join t_test_record ttr on ts.id =
+		ttr.strategy_id
+		where ttr.id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.TStrategy">
+		insert into t_strategy (id,
+		strategy_name, user_id,
+		status, create_date)
+		values
+		(#{id,jdbcType=INTEGER}, #{strategyName,jdbcType=VARCHAR},
+		#{userId,jdbcType=INTEGER},
+		#{status,jdbcType=CHAR},
+		#{createDate,jdbcType=TIMESTAMP})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.ujuit.quant.firmoffer.model.TStrategy">
+		update t_strategy
+		<set>
+			<if test="strategyName != null">
+				strategy_name = #{strategyName,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=CHAR},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_strategy
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+</mapper>

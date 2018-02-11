@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.Dailytarget">
+
+	<resultMap id="BaseResultMap" type="com.ujuit.quant.firmoffer.model.Dailytarget">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<result column="profit_num" property="profitNum" jdbcType="INTEGER" />
+		<result column="loss_num" property="lossNum" jdbcType="INTEGER" />
+		<result column="sub_account_id" property="subAccountId" jdbcType="INTEGER" />
+		<result column="profit_total" property="profitTotal" jdbcType="DECIMAL" />
+		<result column="loss_total" property="lossTotal" jdbcType="DECIMAL" />
+		
+		<result column="max_profit" property="maxProfit" jdbcType="DECIMAL" />
+		<result column="max_loss" property="maxLoss" jdbcType="DECIMAL" />
+		<result column="sale_num" property="saleNum" jdbcType="INTEGER" />
+		<result column="sale_profit_num" property="saleProfitNum" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,time,profit_num,loss_num,sub_account_id,profit_total,loss_total,sale_num,sale_profit_num
+	</sql>
+
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.Dailytarget"
+		flushCache="true" keyProperty="id" useGeneratedKeys="true">
+		INSERT IGNORE INTO
+		daily_target(
+		id,time,profit_num,loss_num,sub_account_id,profit_total,loss_total,max_profit,max_loss,sale_num,sale_profit_num)
+		values (
+		#{id,jdbcType=INTEGER},#{time,jdbcType=TIMESTAMP},#{profitNum,jdbcType=INTEGER},#{lossNum,jdbcType=INTEGER},#{subAccountId,jdbcType=INTEGER}
+		,#{profitTotal,jdbcType=DECIMAL},#{lossTotal,jdbcType=DECIMAL},#{maxProfit,jdbcType=DECIMAL},
+		#{maxLoss,jdbcType=DECIMAL},#{saleNum,jdbcType=INTEGER},#{saleProfitNum,jdbcType=INTEGER})
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		INSERT INTO daily_target (time,profit_num,loss_num,sub_account_id)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			( #{item.time},
+			#{item.profitNum},
+			#{item.lossNum},
+			#{item.subAccountId})
+		</foreach>
+	</insert>
+
+	<update id="update" parameterType="com.ujuit.quant.firmoffer.model.Dailytarget">
+		UPDATE daily_target
+		<set>
+			<if test="id != null">
+				id = #{id,jdbcType=INTEGER},
+			</if>
+			<if test="time != null">
+				time = #{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="profitNum != null">
+				profit_num =
+				#{profitNum,jdbcType=INTEGER},
+			</if>
+			<if test="lossNum != null">
+				loss_num = #{lossNum,jdbcType=INTEGER},
+			</if>
+			<if test="subAccountId != null">
+				sub_account_id =
+				#{subAccountId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id= #{id}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		DELETE FROM daily_target WHERE
+		id = #{id}
+	</delete>
+	
+	<select id="findById" parameterType="Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from daily_target
+		where id = #{id}
+	</select>
+	
+	<select id="findBySubAccountId" parameterType="Integer" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from daily_target
+		where sub_account_id = #{subAccountId}
+		order by time DESC limit 1
+	</select>
+	
+	
+	
+</mapper>

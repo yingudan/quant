@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.TWechatAttentionQh">
+	<resultMap id="BaseResultMap"
+		type="com.ujuit.quant.firmoffer.model.TWechatAttention">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="strategy_id" property="strategyId" jdbcType="INTEGER" />
+		<result column="is_push" property="isPush" jdbcType="INTEGER" />
+		<result column="open_id" property="openId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, user_id, strategy_id, is_push, open_id
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_wechat_attention
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into
+		t_wechat_attention(user_id, strategy_id,is_push, open_id)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.userId},
+			#{item.strategyId},
+			#{item.isPush},
+			#{item.openId}
+			)
+		</foreach>
+	</insert>
+	
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.TWechatAttention"
+		flushCache="true">
+		insert into t_wechat_attention ( user_id, strategy_id,
+		is_push, open_id)
+		values ( #{userId,jdbcType=INTEGER},
+		#{strategyId,jdbcType=INTEGER},
+		#{isPush,jdbcType=INTEGER},
+		#{openId,jdbcType=VARCHAR})
+	</insert>
+
+
+	<update id="updateIspush" parameterType="map">
+		update
+		t_wechat_attention set is_push=#{isPush}
+		where strategy_id =
+		#{strategyId}
+	</update>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.ujuit.quant.firmoffer.model.TWechatAttention">
+		update t_wechat_attention
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="strategyId != null">
+				strategy_id = #{strategyId,jdbcType=INTEGER},
+			</if>
+			<if test="isPush != null">
+				is_push = #{isPush,jdbcType=INTEGER},
+			</if>
+			<if test="openId != null">
+				open_id = #{openId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_wechat_attention
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<delete id="deleteByOpenId" parameterType="java.lang.String" >
+		delete from
+		t_wechat_attention where open_id=#{openId,jdbcType=VARCHAR}
+	</delete>
+	
+	<select id="queryUserId" resultType="java.lang.Integer">
+		SELECT
+		user_id FROM t_wechat_attention GROUP BY user_id
+	</select>
+
+	<select id="queryIspush" resultType="com.ujuit.quant.firmoffer.model.TStrategy"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_wechat_attention
+		WHERE user_id=#{userId}
+	</select>
+
+	<select id="queryOpenId" resultType="java.lang.String"
+		parameterType="java.lang.Integer">
+		SELECT open_id FROM t_wechat_attention WHERE
+		user_id=#{userId} GROUP BY open_id
+	</select>
+
+	<select id="queryAttInfo" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_wechat_attention
+		where strategy_id =#{strategyId,jdbcType=INTEGER}
+		LIMIT 1
+	</select>
+
+</mapper>

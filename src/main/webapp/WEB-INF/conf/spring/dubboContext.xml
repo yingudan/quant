@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans        http://www.springframework.org/schema/beans/spring-beans.xsd        http://code.alibabatech.com/schema/dubbo        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	<dubbo:application name="consumer-of-inside-stock-service" />
+
+	<!-- 使用multicast广播注册中心暴露服务地址 -->
+	<dubbo:registry address="${inside.stock.center.address}" />
+	<!-- 生成远程服务代理，可以和本地bean一样使用demoService -->
+	<!-- <dubbo:reference id="strategyTestService" check="false" timeout="10000" -->
+	<!-- interface="com.ujuit.strategysdkserver.service.StrategyTestService" 
+		/> -->
+
+	<dubbo:reference id="calculationApiService" check="false"
+		timeout="30000" retries="0"
+		interface="com.ujuit.quantcalation.api.service.CalculationApiService" />
+
+	<dubbo:reference id="stockConfigApiService" check="false"
+		timeout="30000" retries="0"
+		interface="com.ujuit.dealserver.service.StockConfigApiService" />
+
+
+
+	<dubbo:service interface="com.ujuit.dealserver.service.StockIndexService"
+		ref="stockIndexService" />
+	<!-- 和本地bean一样实现服务 -->
+	<bean id="stockIndexService"
+		class="com.ujuit.quant.firmoffer.service.impl.StockIndexServiceImpl" />
+
+
+</beans>

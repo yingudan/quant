@@ -1,0 +1,350 @@
+
+.header .logo{
+	margin-right:70px;
+}
+.main{
+	background:#f2f5f6;
+	overflow:hidden;
+}
+
+.main .left{
+	width:202px;
+	float:left;
+}
+.main .right{
+	width:970px;
+	float:right;
+}
+.main .left,.main .right{
+	margin-top:88px;
+}
+
+/*左侧菜单样式*/
+.main .left{
+	background:#fff;
+	height:986px;
+	margin-bottom:200px;
+}
+.main .left p{
+	color:#333333;
+	font-size:16px;
+	font-weight:600;
+	text-indent:33px;
+	margin-left:12px;
+	border-bottom:1px solid #f2f5f6;
+	height:42px;
+	line-height:42px;
+}
+.main .myaccount p{
+	background:url(../../../images/frontend/person/myaccount.png) no-repeat 0 center;
+}
+.main .dataserver p{
+	background:url(../../../images/frontend/person/dataserver.png) no-repeat 0 center;
+}
+.main .set p{
+	background:url(../../../images/frontend/person/set.png) no-repeat 0 center;
+}
+.main .left a{
+	display:block;
+	height:16px;
+	line-height:16px;
+	color:#999999;
+	text-indent:45px;
+	margin-top:17px;
+}
+.main .left a.on{
+	color:#008dff;
+}
+.main .left >div{
+	margin-top:28px;
+}
+.main .left a:hover{
+	color:#008dff;
+}
+/*右侧内容*/
+.white{
+	background:#fff;	
+}
+.main .right{
+	
+}
+.cmyaccount,.cmyaccount .myinfo{
+	overflow:hidden;
+}
+.cmyaccount .name{
+	font-size:24px;
+	line-height:26px;
+	height:26px;
+	text-indent:40px;
+	font-weight:600;
+	padding-top:26px;
+}
+.cmyaccount .phonenum{
+	color:#333333;
+	height:16px;
+	line-height:16px;
+	margin-top:15px;
+	text-indent:40px;
+}
+.cmyaccount .myinfo>div{
+	overflow:hidden;
+	padding-bottom:20px;
+}
+.cmyaccount .scribe{
+	text-indent:40px;
+	color:#999999;
+	font-size:14px;
+	height:16px;
+	line-height:16px;
+	margin-top:20px;
+	float:left;
+}
+.cmyaccount .updatescribe{
+	display:block;
+	float:left;
+	width:91px;
+	height:28px;
+	line-height:28px;
+	text-align:center;
+	background:url(../../../images/frontend/person/btn.png) no-repeat 0 center;
+	margin-top:14px;
+	color:#fff;
+	margin-lefT:64px;
+}
+
+ .ktitle{
+	text-indent:16px;
+	color:#333333;
+	height:38px;
+	font-size:14px;
+	line-height:38px;
+	margin-top:18px;
+	background:url(../../../images/frontend/person/icon.png) no-repeat 0 center;
+}
+.mykey{
+	overflow:hidden;
+}
+.mykey .myinfo .key{
+	float:left;
+	width:436px;
+	float:left;
+	color:#333333;
+	font-size:18px;
+	font-weight:600;
+	text-indent:40px;
+	height:20px;
+	line-height:20px;
+	margin-top:24px;
+}
+.mykey .myinfo>div a{
+	display:block;
+	float:left;
+	width:91px;
+	height:28px;
+	line-height:28px;
+	text-align:center;
+	background:url(../../../images/frontend/person/btn.png) no-repeat 0 center;
+	margin-top:20px;
+	color:#fff;
+	margin-left:30px;
+	
+}
+.mykey .myinfo>div,.mykey .myinfo{
+	overflow:hidden;
+}
+.mykey .tip{
+	clear:both;
+	text-indent:43px;
+	color:#e80000;
+	font-size:12px;
+	margin-top:10px;
+	margin-bottom:25px;
+	overflow:hidden;
+}
+
+.mystrategy{
+	overflow:hidden;
+}
+.mystrategy .myinfo p{
+	height:220px;
+	width:280px;
+	float:left;
+	background:#fff;
+	margin-left:65px;
+}
+.mystrategy .myinfo p:first-child{
+	margin-left:0;
+}
+.mystrategy span{
+	display:block;
+	width:100%;
+	font-size:14px;
+	color:3333333;
+	height:16px;
+	line-height:16px;
+	margin-top:72px;
+	text-align:center;
+	margin-bottom:21px;
+}
+.mystrategy label a{
+	display:block;
+	width:100%;
+	color:#008dff;
+	font-size:48px;
+	height:50px;
+	line-height:50px;
+	text-align:center;
+}
+
+.qustion .qustionc{
+	padding:20px auto;
+	overflow:hidden;
+}
+.qustion a{
+	display:block;
+	color:#008dff;
+	font-size:14px;
+	padding-left:40px;
+	margin:10px auto;
+}
+/*消息中心*/
+.infocenter .nav {
+	border-bottom:1px solid #efefef;
+	overflow:hidden;
+	padding-left:410px;
+}
+.infocenter .nav a{
+	display:block;
+	width:60px;
+	color:#333333;
+	font-size:14px;
+	height:20px;
+	margin:17px auto;
+	margin-right:30px;
+	float:left;
+	cursor:pointer;
+}
+.infocenter .nav a.on{
+	color:#008dff;
+}
+.infoitem{
+	overflow:hidden;
+	border-bottom:1px solid #efefef;
+	margin:20px 40px 0 25px;
+	padding-bottom:17px;
+}
+.infoitem .avatar{
+	height:32px;
+	width:32px;
+	float:left;
+	background:url(../../../images/frontend/person/avatar.png) no-repeat 0 center;
+}
+.infoitem p{
+	color:#999999;
+	font-size:14px;
+}
+.infoitem >div{
+	float:left;
+	width:870px;
+}
+.infoitem .content{
+	line-height:18px;
+	margin-top:7px;
+	margin-left:8px;
+}
+.infoitem .time{
+	text-align:right;
+	margin-top:15px;
+}
+
+/*我的购买*/
+.mybuy{
+	overflow:hidden;
+}
+.mybuy .tip{
+	overflow:hidden;
+	margin-bottom:15px;
+}
+.table{
+	width:890px;
+	margin:0 auto;
+	border-top:1px solid #ccc;
+	color:#333333;
+	text-align:left;
+	margin-top:28px;
+	margin-bottom:300px;
+}
+.table tr{
+	border:1px solid #ccc;
+	border-top:none;
+}
+.table td{
+	text-align:left;
+	text-indent:10px;
+}
+.table thead th{
+	height:46px;
+	line-height:46px;
+	background:#eff8ff;
+	text-indent:10px;
+}
+.table tbody td{
+	height:61px;
+	line-height:61px;
+	text-indent:8px;
+	}
+.table .level,.table .data{
+	line-height:30px;
+}
+.table .level{
+	font-weight:600;
+}	
+.table  a{
+	background:url(../../../images/frontend/person/btn.png) no-repeat 0 center;
+	width:91px;
+	height:28px;
+	line-height:28px;
+	text-align:center;
+	display:block;
+	color:#fff;
+	text-indent:0;
+}
+/*基本信息*/
+.baseinfo{
+	overflow:hidden;
+	padding-bottom:200px;
+}
+.baseinfo input{
+	height:48px;
+	line-height:48px;
+	border:1px solid #ccc;
+	border-radius:4px;
+	padding-left:19px;
+	color:#999999;
+	font-size:14px;
+	width:328px;
+	clear:both;
+}
+.baseinfo  a{
+	background:url(../../../images/frontend/person/btn.png) no-repeat 0 center;
+	width:91px;
+	height:28px;
+	line-height:28px;
+	text-align:center;
+	display:block;
+	color:#fff;
+	margin:0 auto;
+	margin-top:66px;
+}
+.baseinfo >div{
+	overflow:hidden;
+	padding-bottom:110px;
+}
+.baseinfo .unamec{
+	text-align:center;
+	margin-top:80px;
+}
+.baseinfo .pingjiac{
+	text-align:center;
+	margin-top:12px;
+}

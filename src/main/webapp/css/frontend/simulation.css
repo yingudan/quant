@@ -1,0 +1,190 @@
+ .tools{height:35px;overflow:hidden;border-bottom:1px solid #e8eaeb;padding-bottom:12px;}
+ .tools .return{display:block;width:40px;height:26px;margin:13px 10px 2px 25px;float:left;}
+ .tools .titles{line-height:35px;font-size:16px;float:left;display:block;}
+ .tools .stu{line-height:35px;display:block;margin-left:20px;float:left;position:relative;padding-left:18px;}
+ .tools .stu i{display:block;width:15px;height:15px;position:absolute;left:0;top:7.5px;font-style:normal;line-height:15px;font-size:16px;}
+.tools .btns{height:35px;float:left;padding:0 20px;}
+.tools .btns a{line-height:35px;display:block;height:30px;text-align:center;border-radius:10px;float:left;}
+.tools .btns a.ist{width:126px;height:35px;line-height:35px;font-size:14px;color:#fff;margin-right:20px;background:url(../../images/frontend/strategy/s_stop.png) no-repeat center center;}
+.tools .btns a.ist2{width:124px;height:33px;font-size:14px;color:#008dff;margin-right:20px;border:1px solid #008dff;}
+.tools .btns a.a{font-size:14px;color:#008DFF;}
+.header .logo{
+	margin-right:110px;
+}
+.main {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 28px;
+    overflow:hidden;
+    padding-bottom:40px;
+    background:#f2f5f6;
+}
+/*shangbaotai*/
+.shangbaotai{overflow:hidden;position: absolute;left:50%;}
+.shangbaotai a{display:inline-block;width:160px;width:72px;height:35px;line-height:35px;text-align:center;color:#333;margin:0 20px;font-size:14px;font-weight:700;border-bottom:2px solid #fff;}
+.shangbaotai a.on{color:#018EFF;border-bottom:2px solid #018EFF;}
+.tools{
+	padding-top:72px;
+	width:100%;
+	position:relative;
+}
+.tools .status{
+	display:block;
+	height:30px;
+	float:left;
+	min-width:110px;
+	overflow:hidden;
+}
+ .tools .status i{
+	display: block;
+    width: 75px;
+    height: 13px;
+    margin-top:11px;
+    margin-left:14px;
+}
+ .tools .statusA i{
+	background:url(../../images/frontend/detail/statusA.png) no-repeat center center;
+}
+.tools .statusIng i{
+	background:url(../../images/frontend/detail/statusIng.png) no-repeat center center;
+}
+.tools .statusNo i{
+	width:52px;
+	background:url(../../images/frontend/detail/statusNo.png) no-repeat center center;
+}
+.tools .statusReady i{
+	width:40px;
+	background:url(../../images/frontend/detail/statusReady.png) no-repeat center center;
+}
+.tools .relink i{
+	width:77px;
+	background:url(../../images/frontend/detail/relink.png) no-repeat center center;
+}
+.table th{
+	background:#eff8ff;
+}
+.table td{
+	background:#fff;
+}
+.table th,.table td{
+	text-align:left;
+}
+.table td input{
+	margin-top:5px;
+}
+.table td input,.table th input{
+	display:none;
+}
+.table th i{
+	display:block;
+	float:left;
+	height:16px;
+	width:16px;
+	margin-top:10px;
+	background:url(../../images/frontend/detail/updown.png) no-repeat center center;
+	cursor:pointer;
+}
+.table th span{
+	display:block;
+	float:left;
+	padding-right:5px;
+}
+.table .nodata,.nodata{
+	text-align:center;
+	height:35px;
+	line-height:35px;
+	width:100%;
+}
+.table .checkboxc{
+	width:13px;
+	display:block;
+	height:13px;
+	float:left;
+	margin:auto 8px;
+	margin-top:7px;
+
+}
+.table td .checkboxc{
+	margin-top:1px;
+}
+
+/*分页覆盖*/
+.pagenation{
+	text-align:right;
+	width:800px;
+	float:right;
+}
+.data-page .btone{
+	display:block;
+}
+.data-page .bttwo{
+	display:none;
+}
+.data-page .btn a{
+	margin-top:20px;
+	display:block;
+	height:28px;
+	width:78px;
+	float:left;
+	margin-right:20px;
+	text-align:center;
+	color:#919191;
+	font-size:14px;
+	line-height:28px;
+	border:1px solid #c5c5c5;
+	border-radius:8px;
+}
+.data-page .btn a.on{
+	color:#008dff;
+	border-color:#008dff;
+}
+.detail-head .iright{
+	width:141px;
+	right:0;
+	top:18px;
+	margin-top:0px;
+	position:absolute;
+}
+.detail-head  .iright >a{
+	display:block;
+	height:32px;
+	width:78px;
+	line-height:32px;
+	font-size:14px;
+	text-align:center;
+	color:#333333;
+	border:1px solid #333333;
+}
+.detail-head .usercon{
+	overflow:hidden;
+}
+.detail-head .usercon a{
+	display:block;
+	height:32px;
+	line-height:32px;
+	width:139px;
+	text-align:center;
+	border:1px solid #000;
+	font-size:14px;
+	background:#fff;
+	color:#000;
+}
+.detail-head .usercon >a{
+	background:url(../../images/frontend/user/userlg.png) no-repeat center center;
+	text-indent:20px;
+	text-align:left;
+}
+.detail-head .usercon ul{
+	margin-top:8px;
+	display:none;
+}
+ .detail-head .usercon li a{
+	color:#008dff;
+}
+.detail-head .usercon li:last-child{
+	margin-top:-1px;
+}
+.scroll .menu .on, .scroll .menu a:hover {
+    color: #008DFF;
+    border-color: #008DFF;
+}

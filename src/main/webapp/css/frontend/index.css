@@ -1,0 +1,155 @@
+
+.item1{
+	position:relative;
+	z-index:1;
+	height:620px;
+	width:100%;
+	background:url(../../images/frontend/index/bannerbg.jpg) no-repeat center center;
+}
+.item1 .left{
+	width:380px;
+	float:left;
+	height:342px;
+}
+.item1 .left img{
+	margin-top:150px;
+}
+.item1 .left a{
+	display:block;
+	margin-top:55px;
+	width:152px;
+	height:46px;
+	font-size:18px;
+	text-align:center;
+	line-height:46px;
+	border:1px solid #fff;
+	border-radius:17px;
+	color:#fff;
+}
+.item1 .right{
+	float:right;
+	width:700px;
+	height:342px;
+}
+.item1 .right img{
+	float:right;
+	margin-top:80px;
+}
+.item2{
+	overflow:hidden;
+	height:814px;
+}
+.item2>p{
+	height:288ppx;
+	line-height:288px;
+	font-size:32px;
+	text-align:center;
+}
+.item2>div{
+	width:1328px;
+}
+.item2 li{
+	width:332px;
+	float:left;
+}
+.item2 li img,.item2 li label{
+	display:block;
+	width:222px;
+	margin:0 auto;
+	
+}
+.item2 li img{
+	width:102px;
+}
+.item2 li label{
+	text-align:center;
+	color:#333333;
+	font-size:14px;
+	margin:17px auto;
+}
+.item2 li p{
+	font-size:14px;
+	color:#72808e;
+	text-align:center;
+	line-height:24px;
+}
+.item2 li div{
+	width:222px;
+}
+
+.item3{
+	width:100%;
+	height:486px;
+  	background-image:-webkit-linear-gradient(to right, #05d5ff, #007fe5); 
+  	background-image:linear-gradient(to right, #05d5ff, #007fe5);
+
+}
+.item3 .inner{
+	overflow:hidden;
+}
+.item3 .inner >div{
+	width:1456px;
+}
+.item3 .inner>p{
+	font-size:32px;
+	text-align:center;
+	height:122px;
+	line-height:122px;
+	color:#fff;
+	margin-bottom:82px;
+}
+
+.item3 li{
+	float:left;
+	width:364px;
+}
+.item3 .inner .left{
+	width:110px;
+	float:left;
+}
+.item3 .left img{
+	margin-left:9px;
+}
+.item3 .left p{
+	text-align:center;
+	font-size:18px;
+	color:#fff;
+	margin-top:18px;
+}
+.item3 .right{
+	width:254px;
+	float:left;
+}
+.item3 .right i{
+	display:block;
+	height:32px;
+	width:32px;
+	margin-left:110px;
+	margin-top:38px;
+	background:url(../../images/frontend/index/arror.png) no-repeat center center;
+}
+.item4{
+	height:700px;
+	background:url(../../images/frontend/index/earthbg.jpg) no-repeat center bottom;
+}
+.item4 p{
+	text-align:center;
+	font-size:32px;
+	color:#333333;
+	heightL:33px;
+	margin-top:127px;
+}
+.item4 >div{
+	width:598px;
+	margin:0 auto;
+	margin-top:140px;
+}
+.footer{
+	height:102px;
+	width:100%;
+	text-align:center;
+	color:#999999;
+	line-height:102px;
+	background:#31383e;
+	font-size:14px;
+}

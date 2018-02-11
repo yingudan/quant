@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.bus.model.TParamGroup">
+	<resultMap id="BaseResultMap" type="com.ujuit.quant.bus.model.TParamGroup">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="backtest_id" property="backtestId" jdbcType="INTEGER" />
+		<result column="test_status" property="testStatus" jdbcType="CHAR" />
+		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, backtest_id, test_status, start_time, end_time
+	</sql>
+
+	<select id="findOverTime" resultType="com.ujuit.quant.bus.model.TParamGroup"
+		parameterType="map">
+		SELECT min(start_time) startTime,max(end_time) endTime
+		FROM
+		t_param_group WHERE
+		backtest_id =#{testId}
+	</select>
+
+	<insert id="insert" parameterType="com.ujuit.quant.bus.model.TParamGroup"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into t_param_group (
+		backtest_id, test_status,
+		start_time, end_time)
+		values (
+		#{backtestId,jdbcType=INTEGER}, #{testStatus,jdbcType=CHAR},
+		#{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})
+	</insert>
+
+	<update id="update" parameterType="com.ujuit.quant.bus.model.TParamGroup">
+		update t_param_group
+		<set>
+			<if test="backtestId != null">
+				backtest_id = #{backtestId,jdbcType=INTEGER},
+			</if>
+			<if test="testStatus != null">
+				test_status = #{testStatus,jdbcType=CHAR},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Integer">
+		delete from t_param_group
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+</mapper>

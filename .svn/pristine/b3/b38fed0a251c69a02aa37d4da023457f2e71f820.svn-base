@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.IndustryFactor">
+	<resultMap id="BaseResultMap"
+		type="com.ujuit.quant.firmoffer.model.IndustryFactor">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="value" property="value" jdbcType="DECIMAL" />
+		<result column="industry_id" property="industryId" jdbcType="INTEGER" />
+		<result column="publish_date" property="publishDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, create_time, value, industry_id, publish_date
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from industry_factor
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.IndustryFactor">
+		insert into industry_factor (id, create_time, value,
+		industry_id, publish_date)
+		values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+		#{value,jdbcType=DECIMAL},
+		#{industryId,jdbcType=INTEGER}, #{publishDate,jdbcType=TIMESTAMP})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.ujuit.quant.firmoffer.model.IndustryFactor">
+		update industry_factor
+		<set>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="value != null">
+				value = #{value,jdbcType=DECIMAL},
+			</if>
+			<if test="industryId != null">
+				industry_id = #{industryId,jdbcType=INTEGER},
+			</if>
+			<if test="publishDate != null">
+				publish_date = #{publishDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from industry_factor
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+</mapper>

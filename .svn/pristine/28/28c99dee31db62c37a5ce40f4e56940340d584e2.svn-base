@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.TStrategicReturn">
+	<resultMap id="BaseResultMap"
+		type="com.ujuit.quant.firmoffer.model.TStrategicReturn">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="sub_account_id" property="subAccountId"
+			jdbcType="DECIMAL" />
+		<result column="data_type" property="dataType" jdbcType="CHAR" />
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<result column="value" property="value" jdbcType="DECIMAL" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, sub_account_id, data_type, time, value,create_time
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_strategic_return
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="findSumTsr" resultType="com.ujuit.quant.firmoffer.model.TStrategicReturn"
+		parameterType="map">
+		SELECT SUM(a.value) value FROM (SELECT *,date_format(time, '%Y-%m')
+		thedate
+		FROM t_strategic_return ) as a
+		WHERE a.data_type=#{type}
+		<![CDATA[ and a.thedate>= #{startTime}  ]]>
+		<![CDATA[ and a.thedate<= #{endTime}  ]]>
+	</select>
+
+
+	<select id="findTStrategicDtoByTime" resultType="com.ujuit.quant.firmoffer.dto.TStrategicReturnDto"
+		parameterType="map">
+		SELECT a.sub_account_id,a.one_value oneMonth,a.three_value threeMonth,
+		a.six_value sixMonth,a.twelve_value twelveMonth,a.thedate time
+		FROM (SELECT *,date_format(use_date, '%Y-%m') thedate FROM
+		t_strategic_return where data_type=#{datatype}
+		<if test="groupId!=null and groupId!=''">
+			AND sub_account_id=#{groupId}
+		</if>
+		) as a
+		LEFT JOIN t_sub_account tsa ON tsa.id=a.sub_account_id
+		JOIN t_param_group tpg ON tsa.param_group_id=tpg.id
+		LEFT JOIN t_test_record ttr on ttr.id=tpg.backtest_id
+		WHERE ttr.id=#{testId} AND ttr.strategy_id=#{strategyId}
+		<if test="groupId!=null and groupId!=''">
+			AND tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			AND tpg.test_status=#{status}
+		</if>
+		GROUP BY a.thedate desc ORDER BY a.thedate
+	</select>
+
+	<select id="findnowTestId" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		SELECT ttr.id FROM t_test_record ttr
+		LEFT JOIN t_param_group tpg ON ttr.id=tpg.backtest_id
+		WHERE ttr.type=0 AND ttr.strategy_id=#{strategyId}
+		AND ttr.end_time is not null AND tpg.test_status=2
+		ORDER BY ttr.test_time desc LIMIT 1
+	</select>
+
+	<select id="findTStrategicListByTime" resultType="com.ujuit.quant.firmoffer.model.TStrategicReturn"
+		parameterType="map">
+		SELECT DISTINCT a.id, a.sub_account_id subAccountId, a.data_type
+		dataType, a.time, a.value,a.create_time FROM
+		(SELECT *,date_format(time, '%Y-%m') thedate FROM t_strategic_return) as a
+		JOIN t_sub_account tsa ON tsa.id=a.sub_account_id
+		JOIN t_user tu ON tu.id=tsa.user_id
+		JOIN t_strategy ts ON ts.user_id=tu.id
+		JOIN t_test_record ttr ON ts.id=ttr.strategy_id
+		<where>
+			a.thedate=#{thedate} and a.data_type=#{type} and ttr.id=#{testId} and ts.id=#{strategyId}
+		</where>
+	</select>
+
+	<select id="findtsrBymonth" resultType="com.ujuit.quant.firmoffer.model.TStrategicReturn">
+		SELECT tsr.value FROM t_strategic_return tsr
+		LEFT JOIN t_sub_account tsa
+		ON tsa.id=tsr.sub_account_id
+		LEFT JOIN t_param_group tpg ON
+		tpg.id=tsa.param_group_id
+		LEFT JOIN t_test_record ttr ON
+		ttr.id=tpg.backtest_id
+		<where>
+			ttr.strategy_id=#{strategyId} AND ttr.id=#{testId} AND
+			AND data_type=#{type}
+			<if test="date !=null ">
+     	    	<![CDATA[ and tsr.time  >=  #{date}  ]]>
+			</if>
+		</where>
+	</select>
+
+	<select id="findStrategyList" resultType="com.ujuit.quant.firmoffer.dto.StrategyListDto"
+		parameterType="map">
+		SELECT ts.id id,ts.strategy_name strategyName,ts.status
+		status,ts.create_date startTime,
+		(SELECT case when count(is_push) >0
+		then 1 when count(is_push) =0 then 0 end as isAttention
+		FROM t_wechat_attention WHERE strategy_id = ts.id AND is_push=1 )
+		isAttention,
+		(SELECT count(DISTINCT ttr.id) id FROM t_test_record ttr
+		LEFT JOIN
+		t_param_group tpg ON ttr.id = tpg.backtest_id WHERE
+		ttr.strategy_id = ts.id AND
+		ttr.type = 0 AND ttr.end_time IS NOT NULL AND tpg.test_status = 2
+		)
+		hisOfferNum,
+		(SELECT count(DISTINCT ttr.id) id FROM t_test_record ttr
+		LEFT JOIN
+		t_param_group tpg ON ttr.id = tpg.backtest_id WHERE ttr.strategy_id = ts.id
+		AND ttr.type = 1 AND ttr.end_time IS NOT NULL AND tpg.test_status = 2 )
+		nowOfferNum
+		FROM t_strategy ts
+		WHERE ts.user_id =#{userId}
+		<if test="searchText!=null and searchText!=''">
+			and (ts.strategy_name like CONCAT('%',#{searchText},'%')
+			<!-- or username like CONCAT('%',#{searchText},'%') -->
+			)
+		</if>
+		ORDER BY ts.create_date DESC
+	</select>
+	<!-- ORDER BY ( CASE WHEN ts.status!='2' then 1 ELSE 4 END) ,ts.create_date 
+		DESC -->
+
+
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.TStrategicReturn">
+		insert into t_strategic_return
+		(id, sub_account_id,
+		data_type, time, value
+		)
+		values
+		(#{id,jdbcType=INTEGER},
+		#{subAccountId,jdbcType=DECIMAL},
+		#{dataType,jdbcType=CHAR},
+		#{time,jdbcType=TIMESTAMP}, #{value,jdbcType=DECIMAL}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.ujuit.quant.firmoffer.model.TStrategicReturn">
+		update t_strategic_return
+		<set>
+			<if test="subAccountId != null">
+				sub_account_id = #{subAccountId,jdbcType=DECIMAL},
+			</if>
+			<if test="dataType != null">
+				data_type = #{dataType,jdbcType=CHAR},
+			</if>
+			<if test="time != null">
+				time = #{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="value != null">
+				value = #{value,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_strategic_return
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<!-- 根据 子账户数组 批量删除 -->
+	<delete id="batchDeleteBySubAccountIdList" parameterType="java.util.List">
+
+		DELETE FROM t_strategic_return
+		WHERE sub_account_id IN
+		<foreach item="id" collection="list" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

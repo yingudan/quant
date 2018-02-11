@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<context:property-placeholder
+		location="classpath:sso.properties,
+		classpath:config.properties,
+		classpath:jdbc.properties,
+		classpath:redis.properties,
+		classpath:jdbc2.properties,
+		classpath:jdbc3.properties,
+		classpath:druid-config.properties" />
+
+	<context:component-scan
+		base-package="com.ujuit.quant.*.service,com.ujuit.sysmanager.core.mybatis" />
+
+
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="datastore" />
+
+
+	<bean id="datastore" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="url"
+			value="${jdbc.protocol}://${jdbc.host}:${jdbc.port}/${jdbc.database}?${jdbc.param}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="driverClassName" value="${jdbc.driver.class}" />
+		<property name="filters" value="${filters}" />
+
+		<property name="maxActive" value="${maxActive}" />
+		<property name="initialSize" value="${initialSize}" />
+		<property name="maxWait" value="${maxWait}" />
+		<property name="minIdle" value="${minIdle}" />
+
+		<property name="timeBetweenEvictionRunsMillis" value="${timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${minEvictableIdleTimeMillis}" />
+
+		<property name="validationQuery" value="${validationQuery}" />
+		<property name="testWhileIdle" value="${testWhileIdle}" />
+		<property name="testOnBorrow" value="${testOnBorrow}" />
+		<property name="testOnReturn" value="${testOnReturn}" />
+		<property name="maxOpenPreparedStatements" value="${maxOpenPreparedStatements}" />
+		<property name="removeAbandoned" value="${removeAbandoned}" /> <!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}" /> <!-- 1800秒，也就是30分钟 -->
+		<property name="logAbandoned" value="${logAbandoned}" /> <!-- 关闭abanded连接时输出错误日志 -->
+	</bean>
+
+
+	<!-- configLocation为mybatis属性 mapperLocations为所有mapper -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="datastore" p:configLocation="classpath:mybatis-config.xml"
+		p:mapperLocations="classpath:com/ujuit/*/*/mapper/*.xml" />
+	<bean id="sqlSessionTemplate" scope="prototype"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+		<constructor-arg index="1" value="SIMPLE" />
+	</bean>
+	<bean id="batchSqlSessionTemplate" scope="prototype"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+		<constructor-arg index="1" value="SIMPLE" /><!-- -BATCH -->
+	</bean>
+
+
+
+	<tx:annotation-driven transaction-manager="transactionManagerEx" />
+	<bean id="transactionManagerEx"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="datastoreEx" />
+
+	<bean id="datastoreEx" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="url"
+			value="${jdbc2.protocol}://${jdbc2.host}:${jdbc2.port}/${jdbc2.database}?${jdbc2.param}" />
+		<property name="username" value="${jdbc2.username}" />
+		<property name="password" value="${jdbc2.password}" />
+		<property name="driverClassName" value="${jdbc2.driver.class}" />
+		<property name="filters" value="${filters}" />
+
+		<property name="maxActive" value="${maxActive}" />
+		<property name="initialSize" value="${initialSize}" />
+		<property name="maxWait" value="${maxWait}" />
+		<property name="minIdle" value="${minIdle}" />
+
+		<property name="timeBetweenEvictionRunsMillis" value="${timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${minEvictableIdleTimeMillis}" />
+
+		<property name="validationQuery" value="${validationQuery}" />
+		<property name="testWhileIdle" value="${testWhileIdle}" />
+		<property name="testOnBorrow" value="${testOnBorrow}" />
+		<property name="testOnReturn" value="${testOnReturn}" />
+		<property name="maxOpenPreparedStatements" value="${maxOpenPreparedStatements}" />
+		<property name="removeAbandoned" value="${removeAbandoned}" /> <!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}" /> <!-- 1800秒，也就是30分钟 -->
+		<property name="logAbandoned" value="${logAbandoned}" /> <!-- 关闭abanded连接时输出错误日志 -->
+	</bean>
+
+
+	<!-- configLocation为mybatis属性 mapperLocations为所有mapper -->
+	<bean id="sqlSessionFactoryEx" class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="datastoreEx" p:configLocation="classpath:mybatis-config.xml"
+		p:mapperLocations="classpath*:com/ujuit/quant/user/mapperEx/*Mapper.xml" />
+
+
+	<bean id="sqlSessionTemplateEx" scope="prototype"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactoryEx" />
+		<constructor-arg index="1" value="SIMPLE" />
+	</bean>
+
+	<bean id="batchSqlSessionTemplateEx" scope="prototype"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactoryEx" />
+		<constructor-arg index="1" value="SIMPLE" /><!-- -BATCH -->
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManagerEEx" />
+	<bean id="transactionManagerEEx"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="datastoreEEx" />
+
+	<bean id="datastoreEEx" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="url"
+			value="${jdbc3.protocol}://${jdbc3.host}:${jdbc3.port}/${jdbc3.database}?${jdbc3.param}" />
+		<property name="username" value="${jdbc3.username}" />
+		<property name="password" value="${jdbc3.password}" />
+		<property name="driverClassName" value="${jdbc3.driver.class}" />
+		<property name="filters" value="${filters}" />
+
+		<property name="maxActive" value="${maxActive}" />
+		<property name="initialSize" value="${initialSize}" />
+		<property name="maxWait" value="${maxWait}" />
+		<property name="minIdle" value="${minIdle}" />
+
+		<property name="timeBetweenEvictionRunsMillis" value="${timeBetweenEvictionRunsMillis}" />
+		<property name="minEvictableIdleTimeMillis" value="${minEvictableIdleTimeMillis}" />
+
+		<property name="validationQuery" value="${validationQuery}" />
+		<property name="testWhileIdle" value="${testWhileIdle}" />
+		<property name="testOnBorrow" value="${testOnBorrow}" />
+		<property name="testOnReturn" value="${testOnReturn}" />
+		<property name="maxOpenPreparedStatements" value="${maxOpenPreparedStatements}" />
+		<property name="removeAbandoned" value="${removeAbandoned}" /> <!-- 打开removeAbandoned功能 -->
+		<property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}" /> <!-- 1800秒，也就是30分钟 -->
+		<property name="logAbandoned" value="${logAbandoned}" /> <!-- 关闭abanded连接时输出错误日志 -->
+	</bean>
+
+
+	<!-- configLocation为mybatis属性 mapperLocations为所有mapper -->
+	<bean id="sqlSessionFactoryEEx" class="org.mybatis.spring.SqlSessionFactoryBean"
+		p:dataSource-ref="datastoreEEx" p:configLocation="classpath:mybatis-config.xml"
+		p:mapperLocations="classpath*:com/ujuit/quant/user/mapperEEx/*Mapper.xml" />
+
+
+	<bean id="sqlSessionTemplateEEx" scope="prototype"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactoryEEx" />
+		<constructor-arg index="1" value="SIMPLE" />
+	</bean>
+
+	<bean id="batchSqlSessionTemplateEEx" scope="prototype"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactoryEEx" />
+		<constructor-arg index="1" value="SIMPLE" /><!-- -BATCH -->
+	</bean>
+
+
+
+
+	<!-- 初始化: SpringContext -->
+	<bean id="springContextUtils" class="com.ujuit.sysmanager.util.SpringContextUtils" />
+
+	<!-- <bean id="roleModuleService" -->
+	<!-- class="com.ujuit.quant.service.impl.SRoleModuleServiceImpl" /> -->
+	<bean id="dao" class="com.ujuit.sysmanager.core.mybatis.impl.DaoImpl"
+		p:dataType="mysql" p:sqlSessionTemplate-ref="sqlSessionTemplate" />
+
+
+	<bean id="daoEx" class="com.ujuit.sysmanager.core.mybatis.impl.DaoImpl"
+		p:dataType="mysql" p:sqlSessionTemplate-ref="sqlSessionTemplateEx" />
+
+	<bean id="daoEEx" class="com.ujuit.sysmanager.core.mybatis.impl.DaoImpl"
+		p:dataType="mysql" p:sqlSessionTemplate-ref="sqlSessionTemplateEEx" />
+
+	<!-- <bean id="messageSource" -->
+	<!-- class="org.springframework.context.support.ReloadableResourceBundleMessageSource"> -->
+
+	<!-- <property name="fallbackToSystemLocale"> -->
+	<!-- <value>false</value> -->
+	<!-- </property> -->
+	<!-- <property name="basenames"> -->
+	<!-- <list> -->
+	<!-- <value>/WEB-INF/conf/messages/messages</value> -->
+	<!-- <value>/WEB-INF/conf/messages/activity</value> -->
+	<!-- <value>/WEB-INF/conf/messages/common</value> -->
+	<!-- <value>/WEB-INF/conf/messages/index</value> -->
+	<!-- </list> -->
+	<!-- </property> -->
+	<!-- </bean> -->
+
+	<!-- <bean id="message" -->
+	<!-- class="org.springframework.context.support.MessageSourceAccessor"> -->
+	<!-- <constructor-arg index="0" ref="messageSource" /> -->
+	<!-- </bean> -->
+	<bean class="com.ujuit.quant.utils.RedisUtil" />
+</beans>

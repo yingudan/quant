@@ -1,0 +1,415 @@
+/*重写head*/
+.scroll .menu .on,.scroll .menu a:hover{
+	color:#008DFF;border-color:#008DFF;
+}
+.header .logo{
+	margin-right:110px;	
+}
+.main{
+	padding-top:128px;
+	background:#f2f5f6;
+}
+.bottom{
+	overflow:hidden;
+	margin-bottom:102px;
+}
+.bottom >p{
+	
+	overflow:hidden;
+}
+.bottom >p label{
+	color:#333;
+	font-size:14px;
+	
+	display:block;
+	float:left;
+	width:800px;
+	height:48px;
+}
+.bottom label.tabnew a{
+	display:block;
+	height:46px;
+	border-bottom:2px solid #f2f5f6;
+	float:left;
+	line-height:46px;
+	font-size:14px;
+	font-weight:600;
+	color:#333333;
+}
+.bottom a.gupiao{
+	margin-left:510px;
+	margin-right:60px;
+}
+
+.bottom label a.on{
+	border-bottom-color:#008dff;
+	color:#008dff;
+}
+.bottom >p input{
+	background:#fff;
+	color:#999999;
+	font-size:12px;
+	padding-left:10px;
+	
+	height:28px;
+	line-height:28px;
+	width:210px;float:right;
+	border:none;
+	border-radius:3px;
+}
+.bottom .citem{
+	padding-top:10px;
+	background:#f2f4f8;
+	overflow:hidden;
+	padding-bottom:8px;
+	clear:both;
+}
+.citem>div{
+	float:left;
+	margin:20px auto;
+	height:130px;
+	color:#a5a5a5;
+}
+.citem .left{
+	width:742px;
+	padding-left:59px;
+}
+.citem .left .title{
+	color:#323232;
+	font-size:16px;
+	font-weight:700;
+}
+.citem .left i{
+	display:block;
+	width:75px;
+	height:13px;
+}
+.citem .left .status{
+	margin:10px 0 20px 0;
+}
+.citem .left .statusA i{
+	background:url(../../images/frontend/detail/statusA.png) no-repeat center center;
+}
+.citem .left .statusIng i{
+
+	background:url(../../images/frontend/detail/statusIng.png) no-repeat center center;
+}
+.citem .left .statusNo i{
+	width:52px;
+	background:url(../../images/frontend/detail/statusNo.png) no-repeat center center;
+}
+.citem .left .statusReady i{
+	width:40px;
+	background:url(../../images/frontend/detail/statusReady.png) no-repeat center center;
+}
+.citem .left .relink i{
+	width:77px;
+	background:url(../../images/frontend/detail/relink.png) no-repeat center center;
+}
+.citem .left li{
+	float:left;
+	width:106px;
+}
+.citem .left li.teo{
+	width:113px;
+}
+.citem .left .value{
+	font-size:18px;
+	color:#5e5e5e;
+}
+.citem .left .spec{
+	color:#ff5256;
+}
+.citem .right{
+	width:398px;
+	border-left:1px solid #ccc;
+	color:#a5a5a5;
+	position:relative;
+}
+.citem .right .inright a{
+	display:block;
+	height:36px;
+	line-height:36px;
+	border-radius:11px;
+	text-align:center;
+	width:116px;
+	background:#fb7203;
+	color:#fff;
+	font-size:14px;
+	margin-top:82px;
+}
+
+.citem .inleft{
+	width:258px;
+	float:left;
+}
+.citem .inleft p{
+	height:32px;
+	line-height:32px;
+	text-indent:15px;
+}
+.citem .history label,.item .acl label,.citem .history label a,.item .acl label a{
+	color:#008dff;
+}
+
+.citem .inright{
+	width:116px;
+	float:left;
+	margin-top:4px;
+}
+
+.nodata{
+	text-align:center;
+	height:48px;
+	line-height:48px;
+	font-size: 16px;
+}
+/*按钮*/
+.citem .right .inright .openwx{
+	display:block;
+	position:absolute;
+	right:25px;
+	top:35px;
+	height:36px;
+	line-height:36px;
+	display:block;
+	width:116px;
+	height:36px;
+	cursor:pointer;
+	background:url(../../images/frontend/strategy/openwx.png) no-repeat center center;
+}
+.citem .right .inright .alertwx{
+	display:block;
+	position:absolute;
+	right:7px;
+	top:45px;
+	height:36px;
+	line-height:36px;
+	display:block;
+	width:13px;
+	height:13px;
+	cursor:pointer;
+	background:url(../../images/frontend/strategy/alertwx.png) no-repeat center center;
+	background-size:cover;
+}
+.citem .right .inright .closewx{
+	display:block;
+	position:absolute;
+	right:25px;
+	top:35px;
+	width:116px;
+	height:36px;
+	cursor:pointer;
+	background:url(../../images/frontend/strategy/closewx.png) no-repeat center center;
+}
+.citem .right .inright .sdelete{
+	position:absolute;
+	right:25px;
+	top:0px;
+	cursor:pointer;
+	display:block;
+	width:20px;
+	height:20px;
+	background:url(../../images/frontend/strategy/sdelete.png) no-repeat center center;
+}
+/*分页覆盖*/
+.pagenation{
+	text-align:right;
+	width:800px;
+	float:right;
+}
+/*删除弹出框*/
+.tipboxshaow{
+	position:fixed;
+	top:0;
+	left:0;
+	height:100%;
+	width:100%;
+	background:#000;
+	   filter:alpha(opacity=50);  
+      -moz-opacity:0.5;  
+      -khtml-opacity: 0.5;  
+      opacity: 0.5;  
+      z-index:100000;
+}
+.tipbox .tipboxn{
+	position:fixed;
+	z-index:100001;
+	top:50%;
+	left:50%;
+	margin-top:-111px;
+	margin-left:-198px;
+	height:182px;
+	width:356px;
+	background:#fff;
+	padding:20px;
+	border-radius:6px;
+}
+.tipbox .title{
+	width:349px;
+	margin:0 auto;
+	overflow:hidden;
+}
+.tipbox .title label{
+	display:block;
+	font-size:18px;
+	height:20px;
+	line-height:20px;
+	width:300px;
+	color:#333;
+	background:url(../../images/frontend/strategy/tip_icon.png) no-repeat left center;
+	text-indent:28px;
+	float:left;
+}
+.tipbox .title a{
+	display:block;
+	width:20px;
+	height:20px;
+	float:right;
+	background:url(../../images/frontend/strategy/tip_close.png) no-repeat center center;
+}
+.tipbox  .content{
+	line-height:24px;
+	font-size:14px;
+	color:#333333;
+	margin-top:30px;
+}
+.tipbox .btn{
+	margin-top:45px;
+}
+.tipbox .btn a{
+	display:block;
+	height:38px;
+	width:110px;
+	line-height:38px;
+	text-align:center;
+	float:left;
+	color:#ffffff;
+}
+.tipbox .btn .sure{
+	margin-left:109px;
+	background:url(../../images/frontend/strategy/tip_sure.png) no-repeat center center;
+}
+.tipbox .btn .cancel{
+	margin-left:19px;
+	border:1px solid #999999;
+	color:#999;
+	border-radius:6px;
+}
+/*微信二维码弹出框*/
+.wxbox{
+	position:fixed;
+	z-index:100001;
+	top:50%;
+	left:50%;
+	margin-top:-200px;
+	margin-left:-250px;
+	height:400px;
+	width:500px;
+	background:#fff;
+}
+.wxbox .title{
+	height:38px;
+	line-height:38px;
+	border-bottom:1px solid #ccc;
+}
+.wxbox .title label{
+	display:block;
+	height:38px;
+	width:300px;
+	text-indent:50px;
+	overflow:hidden;
+	font-size:14px;
+	color:#adafb2;
+	background:url(../../images/frontend/strategy/popwxicon.png) no-repeat 20px center;
+}
+.wxbox .content p{
+	height:60px;
+	line-height:60px;
+	text-align:center;
+	font-size:18px;
+	color:#333;
+}
+.wxbox .content label{
+	display:block;
+	height:18px;
+	line-height:18px;
+	text-align:center;
+	font-size:14px;
+	color:#a5a5a5;
+}
+.wxbox .content img{
+	height:187px;
+	width:187px;
+	margin-left:155px;
+	margin-top:15px;
+}
+.wxbox .btn{
+	overflow:hidden;
+	margin-top:15px;
+}
+.wxbox .btn a{
+	display:block;
+	font-size:14px;
+	color:#fff;
+	text-align:center;
+	width:100px;
+	height:36px;
+	line-height:36px;
+	margin:0 auto;
+	background:url(../../images/frontend/strategy/wxtipclose.png) no-repeat center center;
+}
+
+/*no data*/
+.no_data{
+	width:1200px;
+	overflow:hidden;
+	margin-bottom:100px;
+}
+.no_data .nodatatitle{
+	font-size:14px;
+	color:#333333;
+	height:16px;
+	line-height:16px;
+	margin-bottom:12px;
+}
+.no_data .nodatac{
+	overflow:hidden;
+	background:#fff;
+}
+.no_data .nodatatop{
+	font-size:18px;
+	color:#999999;
+	height:18px;
+	line-height:20px;
+	margin: 18px 0;
+	text-indent:22px;
+}
+
+.no_data .nodataimg{
+	margin:0 auto;
+	margin-top:22px;
+	width:1072px;
+}
+.no_data a{
+	display:block;
+	width:154px;
+	height:48px;
+	line-height:48px;
+	text-align:center;
+	font-size:18px;
+	color:#fff;
+	margin:0 auto;
+	margin-top:87px;
+	background:url(../../images/frontend/strategy/s_btn_154.png) no-repeat center center;
+	
+}
+.no_data label{
+	display:block;
+	height:16px;
+	text-align:center;
+	width:100%;
+	margin-top:12px;
+	color:#999999;
+	margin-bottom:80px;
+}

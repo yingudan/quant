@@ -1,0 +1,411 @@
+ .tools{height:35px;overflow:hidden;border-bottom:1px solid #e8eaeb;padding-bottom:12px;}
+ .tools .return{display:block;width:40px;height:26px;margin:13px 10px 2px 25px;float:left;}
+ .tools .titles{line-height:35px;font-size:16px;float:left;display:block;}
+ .tools .stu{line-height:35px;display:block;margin-left:20px;float:left;position:relative;padding-left:18px;}
+ .tools .stu i{display:block;width:15px;height:15px;position:absolute;left:0;top:7.5px;font-style:normal;line-height:15px;font-size:16px;}
+.tools .btns{height:35px;float:left;padding:0 20px;}
+.tools .btns a{line-height:35px;display:block;height:30px;text-align:center;border-radius:10px;float:left;}
+.tools .btns a.ist{width:126px;height:35px;line-height:35px;font-size:14px;color:#fff;margin-right:20px;background:url(../../images/frontend/strategy/s_stop.png) no-repeat center center;}
+.tools .btns a.ist2{width:124px;height:33px;font-size:14px;color:#008dff;margin-right:20px;border:1px solid #008dff;}
+.tools .btns a.a{font-size:14px;color:#008DFF;}
+.header .logo{
+	margin-right:110px;
+}
+.main {
+    width: 100%;
+    margin: 0 auto;
+    padding-top: 28px;
+    overflow:hidden;
+    padding-bottom:40px;
+    background:#f2f5f6;
+}
+/*shangbaotai*/
+.shangbaotai{text-align:center;overflow:hidden;}
+.shangbaotai a{display:inline-block;width:160px;width:72px;height:35px;line-height:35px;text-align:center;color:#333;margin:0 20px;font-size:14px;font-weight:700;border-bottom:2px solid #fff;}
+.shangbaotai a.on{color:#018EFF;border-bottom:2px solid #018EFF;}
+.tools{
+	padding-top:72px;
+	width:100%;
+}
+.tools .status{
+	display:block;
+	height:30px;
+	float:left;
+	min-width:110px;
+	overflow:hidden;
+}
+ .tools .status i{
+	display: block;
+    width: 75px;
+    height: 13px;
+    margin-top:11px;
+    margin-left:14px;
+}
+ .tools .statusA i{
+	background:url(../../images/frontend/detail/statusA.png) no-repeat center center;
+}
+.tools .statusIng i{
+	background:url(../../images/frontend/detail/statusIng.png) no-repeat center center;
+}
+.tools .statusNo i{
+	width:52px;
+	background:url(../../images/frontend/detail/statusNo.png) no-repeat center center;
+}
+.tools .statusReady i{
+	width:40px;
+	background:url(../../images/frontend/detail/statusReady.png) no-repeat center center;
+}
+.tools .relink i{
+	width:77px;
+	background:url(../../images/frontend/detail/relink.png) no-repeat center center;
+}
+.maininner>div{
+	background:#f2f4f8;
+	overflow:hidden;
+	height:605px;
+	margin-top:24px;
+    
+}
+.maininner .left{
+	float:left;
+	width:667px;
+	overflow-y: scroll;
+	background:#fff;
+}
+ .maininner .title{
+ 	margin-top:8px;
+ 	font-size:14px;
+ 	color:#333333;
+ 	height:38px;
+ 	line-height:38px;
+ 	font-weight:600;
+ 	margin-left:16px;
+ 	border-bottom:1px solid #b2b2b2;
+ 	margin-bottom:17px;
+ }
+.maininner .ileft{
+	width:132px;
+	float:left;
+	font-size:16px;
+	color:#000;
+	font-weight:600;
+}
+.maininner .left .title{
+	width:520px;
+}
+.maininner .left .paraitem{
+	width:560px;
+	height:94x;
+	margin-left:16px;
+	margin-top:26px;
+	overflow:hidden;
+}
+.maininner .iright input,.maininner .right input{
+	width:310px;
+	height:48px;
+	border:1px solid #ced3e3;
+	line-height:48px;
+	margin-top:23px;
+	background:#f2f4f8;
+	font-size:14px;
+	color:#333;
+	padding-left:18px;
+}
+.maininner .iright{
+	width:406px;
+	float:left;
+	height:94px;
+}
+.maininner .iright>p{
+	font-size:14px;
+	color:#000;
+}
+.maininner .rcen{
+	width:394px;
+	margin-left:16px;
+}
+.maininner .right .title{
+	width:394px;
+}
+.maininner .rcen label{
+	font-size:14px;
+	color:#000;
+}
+.maininner .rcen .item{
+	margin-bottom:23px;
+}
+.maininner  .time input{
+	width:113px;
+	background:#fff;
+	float:left;
+	height:34px;
+	line-height:34px;
+	border-radius:5px;
+}
+.maininner  .time span{
+	display:block;
+	overflow:hidden;
+}
+.maininer .time .bottom{
+	border-bottom:1px solid #ccc;
+	width:30px;
+	float:left;
+	height:20px;
+}
+.maininner .right .subtitle{
+	font-size:18px;
+	font-weight:600;
+	text-align:center;
+	margin-top:9px;
+	margin-bottom:53px;
+}
+.maininner .right{
+	width:505px;
+	float:right;
+	background:#fff;
+}
+.maininner .right a.btn{
+	display:block;
+	
+	width:154px;
+	height:48px;
+	line-height:48px;
+	text-align:center;
+	color:#fff;
+	background:#fb7203;
+	font-size:18px;
+	margin:0 auto;
+	margin-top:38px;
+	border-radius:16px;
+}
+.paraitem label{
+	dispaly:block;
+	float:left;
+	height:21px;
+	line-height:21px;
+}
+.paraitem p label:first-child{
+	margin-right:52px;
+}
+.paraitem p label i{
+	display:block;
+	height:16px;
+	width:16px;
+	float:left;
+	margin-right:6px;
+	margin-top:2px;
+	background:url(../../images/frontend/detail/unon.png) no-repeat center center;
+}
+.paraitem label i.on{
+	background:url(../../images/frontend/detail/on.png) no-repeat center center;
+}
+
+.threeinput{
+	overflow:hidden;
+	clear:both;
+	padding-top:12px;
+}
+.threeinput label{
+	display:block;
+	width:114px;
+	height:73px;
+	float:left;
+	margin-right:21px;
+}
+.threeinput label i{
+	display:block;
+	height:24px;
+	width:100%;
+	text-align:center;
+	font-style: normal;
+}
+.maininner .threeinput  input{
+	width:112px;
+	margin-top:1px;
+	height:34px;
+	line-height:34px;
+}
+.maininner .comm_input_box span{
+	text-align:left;
+}
+.maininner .comm_input_box .comm_select{
+	clear:both;
+}
+.comm_input_box .input_one .text{
+	background:#fff;
+	width:328px;
+	height:34px;
+	border:1px solid #ced3e3;
+	line-height:34px;
+	margin-top:13px;
+	font-size:14px;
+	color:#333;
+	text-indent:18px;
+	margin-left:0;
+	padding-left:0;
+	padding-right:0;
+}
+.comm_select ul{
+	top:49px;
+	left:0;
+	width:113px;
+}
+.comm_select ul li{
+	width:135px;
+}
+
+/*获取验证码弹出层*/
+.popcode{
+	display:none;
+	height:100%;
+	width:100%;
+	background:#b2b2b2;
+	position:fixed;
+	top:0;
+	left:0;
+	min-width:1200px;
+	 filter:alpha(opacity=50);  
+      -moz-opacity:0.5;  
+      -khtml-opacity: 0.5;  
+      opacity: 0.5;
+      z-index:100;
+}
+.popbox{
+	display:none;
+	z-index:101;
+	height:203px;
+	width:388px;
+	position:fixed;
+	left:50%;
+	top:50%;
+	margin-top:-102px;
+	margin-left:-199px;
+	background:#fff;
+	border-radius:15px;
+}
+.popbox .title{
+	height:70px;
+	line-height:70px;
+	text-align:center;
+	font-size:18px;
+	color:#000;
+	marign-bottom:6px;
+}
+.popbox div{
+	overflow:hidden;
+	width:288px;
+	margin:0 auto;
+	color:#333333;
+	font-size:20px;
+	font-weight:600;
+	text-align:left;
+	height:93px;
+	margin-left:60px;
+}
+.popbox img{
+	float:right;
+	width:104px;
+	height:50px;
+}
+.popbox input{
+	width:203px;
+	height:48px;
+	line-height:48px;
+	text-indent:18px;
+	overflow:hidden;
+	border-radius:3px;
+	border:1px solid #d9dce9;
+	background:#fcfdfe;
+	font-size:14px;
+	color:#999999;
+	float:left;
+}
+.popbox .btn{
+	
+	text-align:center;
+}
+.popbox a{
+	color:#008dff;
+	font-size:14px;
+}
+.popbox a:first-child{
+	margin-right:11px;
+}
+.nodata{
+	text-align:center;
+	height:36px;
+	line-height:36px;
+	font-size: 14px;
+}
+
+.detail-head .iright{
+	width:141px;
+	right:0;
+	top:18px;
+	margin-top:0px;
+	position:absolute;
+}
+.detail-head  .iright >a{
+	display:block;
+	height:32px;
+	width:78px;
+	line-height:32px;
+	font-size:14px;
+	text-align:center;
+	color:#333333;
+	border:1px solid #333333;
+}
+.detail-head .usercon{
+	overflow:hidden;
+}
+.detail-head .usercon a{
+	display:block;
+	height:32px;
+	line-height:32px;
+	width:139px;
+	text-align:center;
+	border:1px solid #000;
+	font-size:14px;
+	background:#fff;
+	color:#000;
+}
+.detail-head .usercon >a{
+	background:url(../../images/frontend/user/userlg.png) no-repeat center center;
+	text-indent:20px;
+	text-align:left;
+}
+.detail-head .usercon ul{
+	margin-top:8px;
+	display:none;
+}
+ .detail-head .usercon li a{
+	color:#008dff;
+}
+.detail-head .usercon li:last-child{
+	margin-top:-1px;
+}
+/*错误弹出层*/
+.errortips{
+	height:
+}
+.errortips .ebtn{
+	display:block;
+	height: 35px;
+    line-height: 35px;
+    margin: 0 auto;
+    padding: 0 15px;
+    border: 1px solid #4898d5;
+    background-color: #2e8ded;
+    color: #fff;
+    border-radius: 2px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    width:80px;
+    text-align:center;
+    margin-top:20px;
+}
+.scroll .menu .on, .scroll .menu a:hover {
+    color: #008DFF;
+    border-color: #008DFF;
+}

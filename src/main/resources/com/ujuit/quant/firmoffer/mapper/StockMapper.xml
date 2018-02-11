@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.Stock">
+	
+	<!-- 根据 子账户数组 批量删除 -->
+	<delete id="batchDeleteStockApplayListBySubAccountIdList" parameterType="java.util.List">
+	
+		DELETE FROM stock_applay_list 
+		WHERE applay_user IN
+		<foreach item="id" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	
+	<!-- 根据 子账户数组 批量删除 -->
+	<delete id="batchDeleteStockAccountBySubAccountIdList" parameterType="java.util.List">
+	
+		DELETE FROM stock_account 
+		WHERE account_no IN
+		<foreach item="id" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<!-- 根据 子账户数组 批量删除 -->
+	<delete id="batchDeleteStockCancelListBySubAccountIdList" parameterType="java.util.List">
+	
+		DELETE FROM stock_cancel_list 
+		WHERE cancel_user IN
+		<foreach item="id" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<!-- 根据 子账户数组 批量删除 -->
+	<delete id="batchDeleteStockDealListBySubAccountIdList" parameterType="java.util.List">
+	
+		DELETE FROM stock_deal_list 
+		WHERE account_no IN
+		<foreach item="id" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

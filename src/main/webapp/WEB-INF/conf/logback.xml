@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">   
+
+  <property name="log_home" value="${webAppRoot}" />
+  
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">   
+      <pattern>%n%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %class LineNumbers:%line%n%msg</pattern>   
+    </encoder>
+  </appender>
+  
+  <!-- <appender>是<configuration>的子节点,是负责写日志的组件.<appender>有两个必要属性name和class.name指定appender名称,class指定appender的全限定名. -->
+  <!-- 按规则来划分日志 -->
+  <appender name="rollfile" class="ch.qos.logback.core.rolling.RollingFileAppender">  
+  	 <!-- 是否追加写入文件,默认为true -->
+  	 <append>true</append>
+  	 <!-- 指定按时间划分日志的规则 -->
+  	 <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">   
+      <!-- 规则模式/会被当做目录分隔符,可以为相对路径或绝对路径 -->
+      <fileNamePattern>${log_home}WEB-INF/logs/application-%d{yyyy-MM-dd}.log</fileNamePattern>   
+      <!-- 指定30天后删除保存的日志文件 -->
+      <maxHistory>30</maxHistory>    
+    </rollingPolicy>  
+  	<!-- 对日志进行格式化 %n-->
+  	<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">   
+      <pattern>%n%d{yyyy-MM-dd HH:mm:ss} %level [%thread] %class LineNumbers:%line%n%msg</pattern>   
+    </encoder>
+  </appender>
+    
+	    
+  <root level="error">   
+  	 <appender-ref ref="console" /> 
+     <appender-ref ref="rollfile" />
+  </root>   
+ 
+</configuration>

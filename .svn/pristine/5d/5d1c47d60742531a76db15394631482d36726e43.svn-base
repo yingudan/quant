@@ -1,0 +1,22 @@
+# mysql config
+jdbc.driver.class=com.mysql.jdbc.Driver
+jdbc.protocol=jdbc:mysql
+
+jdbc.param=autoReconnect=true&useUnicode=true&characterEncoding=utf8&useNewIO=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+
+jdbc.username=root
+jdbc.password=123456
+jdbc.host=ujua.f3322.net
+jdbc.port=3333
+jdbc.database=dealserver
+
+
+
+
+#jdbc.username=root
+#jdbc.password=root
+#jdbc.host=127.0.0.1
+#jdbc.port=3306
+#jdbc.database=dealserver
+
+

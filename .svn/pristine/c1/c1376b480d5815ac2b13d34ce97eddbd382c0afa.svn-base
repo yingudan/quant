@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.dto.ProductDto" >
+
+	<cache eviction="LRU"    size="204800" readOnly="true"  />  
+
+	<select id="qeuryProducList" resultType="com.ujuit.quant.firmoffer.dto.ProductDto"
+		parameterType="java.lang.Integer">
+		SELECT
+		tm.id id,tm.name menuName, bps.buy_time buyTime, bps.end_time
+		endTime, bpg.name productName
+		FROM
+		bl_product_sell bps
+		JOIN t_menu tm ON
+		tm.id=bps.sp_id
+		JOIN bl_product_grade bpg ON bpg.id=bps.grade_id WHERE
+		bps.c_id=#{id, jdbcType=INTEGER}
+	</select>
+	
+</mapper>

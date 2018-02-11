@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.TParamGroup">
+	<resultMap id="BaseResultMap" type="com.ujuit.quant.firmoffer.model.TParamGroup">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="backtest_id" property="backtestId" jdbcType="INTEGER" />
+		<result column="test_status" property="testStatus" jdbcType="CHAR" />
+		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, backtest_id, test_status, start_time, end_time
+	</sql>
+
+	<select id="findOverTime" resultType="com.ujuit.quant.firmoffer.model.TParamGroup"
+		parameterType="map">
+		SELECT min(start_time) startTime,max(end_time) endTime FROM
+		t_param_group WHERE
+		backtest_id =#{testId}
+	</select>
+
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_param_group
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.TParamGroup">
+		insert into t_param_group (id, backtest_id, test_status,
+		start_time, end_time)
+		values (#{id,jdbcType=INTEGER}, #{backtestId,jdbcType=INTEGER},
+		#{testStatus,jdbcType=CHAR},
+		#{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.ujuit.quant.firmoffer.model.TParamGroup">
+		update t_param_group
+		<set>
+			<if test="backtestId != null">
+				backtest_id = #{backtestId,jdbcType=INTEGER},
+			</if>
+			<if test="testStatus != null">
+				test_status = #{testStatus,jdbcType=CHAR},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from t_param_group
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<!-- 根据 主键数组 批量删除 -->
+	<delete id="batchDeleteByPrimaryKeyList" parameterType="java.lang.String">
+
+		DELETE FROM t_param_group
+		WHERE id in
+		<foreach item="id" collection="list" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<!-- 拿到测试记录 正在运行的参数组 -->
+	<select id="selectRunningGroup" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		SELECT 
+		<include refid="Base_Column_List" /> 
+		from t_param_group where backtest_id = #{id,jdbcType=INTEGER} and end_time is null and start_time is not null   ORDER BY id DESC limit 1;
+	</select>
+
+</mapper>

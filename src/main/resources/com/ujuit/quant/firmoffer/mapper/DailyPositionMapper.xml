@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.DailyPosition">
+	<resultMap id="BaseResultMap" type="com.ujuit.quant.firmoffer.model.DailyPosition">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="sub_account_id" property="subAccountId"
+			jdbcType="DECIMAL" />
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<result column="stock_name" property="stockName" jdbcType="VARCHAR" />
+		<result column="closing_price" property="closingPrice"
+			jdbcType="DECIMAL" />
+		<result column="position_num" property="positionNum" jdbcType="DECIMAL" />
+		<result column="tran_price" property="tranPrice" jdbcType="DECIMAL" />
+		<result column="position_price" property="positionPrice"
+			jdbcType="DECIMAL" />
+		<result column="profit" property="profit" jdbcType="DECIMAL" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, sub_account_id, time, stock_name, closing_price, position_num,
+		tran_price, position_price,
+		profit,code
+	</sql>
+
+	<resultMap id="DailyPositionDtoMap"
+		type="com.ujuit.quant.firmoffer.dto.DailyPositionDto">
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		 <collection property="dpList"
+			ofType="com.ujuit.quant.firmoffer.model.DailyPosition">
+				<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="stockName" property="stockName" jdbcType="VARCHAR" />
+			<result column="closingPrice" property="closingPrice" jdbcType="DECIMAL" />
+			<result column="positionNum" property="positionNum" jdbcType="DECIMAL" />
+			<result column="positionPrice" property="positionPrice" jdbcType="DECIMAL" />
+			<result column="profit" property="profit" jdbcType="DECIMAL" />
+			<result column="code" property="code" jdbcType="VARCHAR" />
+			<result column="tranPrice" property="tranPrice" jdbcType="DECIMAL" />
+		</collection>
+	</resultMap>
+	
+	
+	<select id="findNowDailyList"  resultMap="DailyPositionDtoMap" parameterType="map">
+	SELECT dp.id ,dp.time ,dp.stock_name stockName,
+	dp.closing_price closingPrice,
+	dp.position_num positionNum,
+	dp.position_price positionPrice,
+	dp.profit,dp.code, dp.tran_price tranPrice
+	FROM
+	daily_position dp
+	JOIN t_sub_account tsa ON dp.sub_account_id = tsa.id
+	JOIN t_param_group tpg
+	ON tsa.param_group_id = tpg.id
+	JOIN t_test_record ttr ON ttr.id =
+	tpg.backtest_id
+	where ttr.strategy_id=#{strategyId} AND ttr.id=#{testId}
+	<if test="startTime!=null">
+		<![CDATA[ and dp.time>= #{startTime}  ]]>
+	</if>
+	<if test="endTime!=null">
+		<![CDATA[ and dp.time<= #{endTime}  ]]>
+	</if>
+	</select>
+
+
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from daily_position
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="findAfDay"  resultType="java.lang.Integer" parameterType="map">
+	
+		SELECT count(1) total FROM (
+	SELECT da.time FROM daily_assets da
+join (
+	SELECT tsa.id FROM t_sub_account tsa
+	join t_param_group tpg ON tpg.id=tsa.param_group_id
+	join t_test_record ttr ON ttr.id=tpg.backtest_id
+	WHERE ttr.id=#{testId} AND  tpg.test_status=1
+	)
+temp on da.sub_account_id =temp.id
+
+   GROUP BY da.time
+	) a
+	
+	 
+	</select>
+	
+	
+	
+	
+	<select id="findNowDaily"  resultType="com.ujuit.quant.firmoffer.model.DailyPosition"  parameterType="map" >
+	SELECT
+	sa.stock_name stockName,
+	sa.stock_price tranPrice,
+	sa.stock_code
+	CODE,
+	sa.stock_num positionNum,
+	sa.stock_buy_money positionPrice,
+	sa.market_price nowPrice
+	FROM
+	stock_account sa
+	 JOIN t_sub_account tsa ON tsa.id=sa.account_no
+	JOIN t_param_group tpg ON tpg.id=tsa.param_group_id
+	 JOIN
+	t_test_record ttr ON ttr.id= tpg.backtest_id
+	WHERE ttr.strategy_id=#{strategyId} AND ttr.id=#{testId} and    sa.stock_num>0
+	</select>
+	
+	
+<!--                 昨日收盘价              closingPrice -->
+<!--                 收益(*)                        profit -->
+<!--                 现价 (*)                     nowPrice -->
+	<select id="findMyDaily"  resultType="com.ujuit.quant.firmoffer.model.DailyPosition"  parameterType="map">
+	SELECT
+	sa.stock_name stockName,
+	sa.stock_price tranPrice,
+	sa.stock_code CODE,
+	sa.stock_num positionNum,
+	sa.stock_buy_money    positionPrice		
+	FROM
+	stock_account sa
+	WHERE sa.account_no in
+	(
+	SELECT tsa.id FROM t_sub_account tsa LEFT JOIN
+	t_param_group tpg ON tsa.param_group_id=tpg.id
+	LEFT JOIN t_test_record ttr ON ttr.id= tpg.backtest_id
+		WHERE ttr.strategy_id=#{strategyId} AND ttr.id=#{testId}
+	)
+	</select>
+		
+	<select id="queryGradeDtoList" resultType="com.ujuit.quant.firmoffer.dto.gradeDto" parameterType="map">
+	SELECT da.grade,da.time gradeTime
+	FROM daily_assets da
+	LEFT JOIN t_sub_account tsa on tsa.id=da.sub_account_id
+	JOIN
+	t_param_group
+	tpg ON tsa.param_group_id=tpg.id
+	LEFT JOIN t_test_record
+	ttr on
+	ttr.id=tpg.backtest_id
+	where ttr.id=#{testId} and ttr.strategy_id=#{strategyId}
+		<if test="startTime!=null">
+			<![CDATA[ and da.time>= #{startTime}  ]]>
+		</if>
+		<if test="endTime!=null">
+			<![CDATA[ and da.time<= #{endTime}  ]]>
+		</if>
+		  ORDER BY da.time  
+	</select>	
+		
+		
+	<select id="queryMixSpace" resultType="com.ujuit.quant.firmoffer.dto.MixPositionDto" parameterType="map">
+	SELECT
+	sdl.stock_name stockName,
+	sdl.stock_code code,
+	sdl.deal_price dealPrice,
+	sdl.applay_type applayType,
+	sdl.deal_num  dealNum,
+	sdl.applay_type applayType,
+	sdl.deal_time dealTime,
+	sdl.trade_num tradeNum,
+	sdl.deal_date   dealDate
+	FROM
+	stock_deal_list sdl
+	JOIN
+	t_param_group
+	tpg ON sdl.account_no=tpg.id
+	LEFT JOIN t_test_record
+	ttr on
+	ttr.id=tpg.backtest_id
+	where ttr.id=#{testId} and ttr.strategy_id=#{strategyId}
+	 AND sdl.deal_date=(
+	SELECT max(sdl.deal_date) date
+	FROM stock_deal_list
+	sdl JOIN
+	t_param_group
+	tpg ON sdl.account_no=tpg.id
+	LEFT JOIN t_test_record
+	ttr on
+	ttr.id=tpg.backtest_id
+	where ttr.id=#{testId} and ttr.strategy_id=#{strategyId} 
+	)
+	</select>	
+		
+		
+		
+	<select id="DailyPositionDto"   resultMap="DailyPositionDtoMap"  parameterType="map">
+		SELECT dp.id ,dp.time ,dp.stock_name stockName,
+		dp.closing_price closingPrice,
+		dp.position_num positionNum,
+		dp.position_price positionPrice,
+		dp.profit,dp.code, dp.tran_price tranPrice
+		FROM
+		daily_position dp
+		JOIN t_sub_account tsa ON dp.sub_account_id = tsa.id
+		JOIN t_param_group tpg ON tsa.param_group_id = tpg.id
+		JOIN t_test_record ttr ON ttr.id =tpg.backtest_id
+		where ttr.strategy_id=#{strategyId} AND ttr.id=#{testId}
+		<if test="status!=null and status!=''">
+			 AND tpg.test_status=#{status}
+		</if>
+		<if test="groupId!=null and groupId!=''">
+			 AND tpg.id=#{groupId}
+		</if>
+		<if test="startTime!=null">
+			<![CDATA[ and dp.time>= #{startTime}  ]]>
+		</if>
+		<if test="endTime!=null">
+			<![CDATA[ and dp.time<= #{endTime}  ]]>
+		</if>
+		  ORDER BY dp.time  
+	</select>
+	
+	
+	<select id="findDpList" resultType="com.ujuit.quant.firmoffer.model.DailyPosition" parameterType="map">
+	SELECT
+	a.id, a.sub_account_id  subAccountId, a.time, a.stock_name stockName, a.closing_price closingPrice,
+	a.position_num positionNum,
+	a.tran_price closingPrice, a.position_price positionPrice,
+	a.profit,a.code,a.thedate, a.tran_price tranPrice,a.code  code
+	FROM(
+		SELECT
+	dp.*, date_format(time, '%Y-%m-%d') thedate
+	FROM
+	daily_position dp 
+	JOIN t_sub_account tsa ON dp.sub_account_id = tsa.id
+	JOIN t_param_group tpg ON tsa.param_group_id = tpg.id
+	JOIN t_test_record ttr ON ttr.id = tpg.backtest_id
+	where ttr.strategy_id=#{strategyId} AND ttr.id=#{testId}
+		<if test="status!=null and status!=''">
+			 AND tpg.test_status=#{status}
+		</if>
+		<if test="groupId!=null and groupId!=''">
+			 AND tpg.id=#{groupId}
+		</if>
+	) a
+		WHERE a.thedate =#{thedate} ORDER BY a.time desc 
+	</select>	
+		
+		
+	<select id="findThedateList" resultType="com.ujuit.quant.firmoffer.model.DailyPosition"  >
+	SELECT
+	a.thedate
+	FROM
+	(
+	SELECT
+	*, date_format(time, '%Y-%m-%d') thedate
+	FROM
+	daily_position
+	) a
+	GROUP BY
+	a.thedate DESC
+	</select>
+	
+
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.DailyPosition">
+		insert into daily_position (id, sub_account_id, time,
+		stock_name, closing_price, position_num,
+		tran_price, position_price, profit,code
+		)
+		values (#{id,jdbcType=INTEGER}, #{subAccountId,jdbcType=DECIMAL},
+		#{time,jdbcType=TIMESTAMP},
+		#{stockName,jdbcType=VARCHAR}, #{closingPrice,jdbcType=DECIMAL}, #{positionNum,jdbcType=DECIMAL},
+		#{tranPrice,jdbcType=DECIMAL}, #{positionPrice,jdbcType=DECIMAL},
+		#{profit,jdbcType=DECIMAL},#{code,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.ujuit.quant.firmoffer.model.DailyPosition">
+		update daily_position
+		<set>
+			<if test="subAccountId != null">
+				sub_account_id = #{subAccountId,jdbcType=DECIMAL},
+			</if>
+			<if test="time != null">
+				time = #{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="stockName != null">
+				stock_name = #{stockName,jdbcType=VARCHAR},
+			</if>
+			<if test="closingPrice != null">
+				closing_price = #{closingPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="positionNum != null">
+				position_num = #{positionNum,jdbcType=DECIMAL},
+			</if>
+			<if test="tranPrice != null">
+				tran_price = #{tranPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="positionPrice != null">
+				position_price = #{positionPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="profit != null">
+				profit = #{profit,jdbcType=DECIMAL},
+			</if>
+			<if test="code != null">
+				profit = #{code,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from daily_position
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<!-- 根据 子账户数组 批量删除 -->
+	<delete id="batchDeleteBySubAccountIdList" parameterType="java.util.List">
+		DELETE FROM daily_position 
+		WHERE sub_account_id IN
+		<foreach item="id" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+
+</mapper>

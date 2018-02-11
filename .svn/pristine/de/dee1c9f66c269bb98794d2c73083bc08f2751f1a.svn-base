@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.TTestRecord">
+	<resultMap id="BaseResultMap" type="com.ujuit.quant.firmoffer.model.TTestRecord">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="strategy_id" property="strategyId" jdbcType="INTEGER" />
+		<result column="test_time" property="testTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="his_data_start" property="hisDataStart"
+			jdbcType="TIMESTAMP" />
+		<result column="his_data_end" property="hisDataEnd" jdbcType="TIMESTAMP" />
+		<result column="frequency" property="frequency" jdbcType="CHAR" />
+		<result column="ini_funding" property="iniFunding" jdbcType="DECIMAL" />
+		<result column="type" property="type" jdbcType="CHAR" />
+	</resultMap>
+	
+	<resultMap id="BaseResultMapTestRecordListDto" type="com.ujuit.quant.firmoffer.dto.TTestRecordListDto">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="strategy_id" property="strategyId" jdbcType="INTEGER" />
+		<result column="test_time" property="testTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="his_data_start" property="hisDataStart"
+			jdbcType="TIMESTAMP" />
+		<result column="his_data_end" property="hisDataEnd" jdbcType="TIMESTAMP" />
+		<result column="frequency" property="frequency" jdbcType="CHAR" />
+		<result column="ini_funding" property="iniFunding" jdbcType="DECIMAL" />
+		<result column="type" property="type" jdbcType="CHAR" />
+		<result column="accumulated_return" property="accumulatedReturn" jdbcType="DECIMAL" />
+		<result column="status" property="status" />
+	</resultMap>
+	
+	<resultMap id="BaseResultMapParamGroupListDto" type="com.ujuit.quant.firmoffer.dto.ParamGroupListDto">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="sub_account_id" property="subAccountId"
+			jdbcType="INTEGER" />
+		<result column="profit" property="profit" jdbcType="DECIMAL" />
+		<result column="yield" property="yield" jdbcType="DECIMAL" />
+		<result column="benchmark" property="benchmark" jdbcType="DECIMAL" />
+		<result column="alpha" property="alpha" jdbcType="DECIMAL" />
+		<result column="beta" property="beta" jdbcType="DECIMAL" />
+		<result column="shapratio" property="shapratio" jdbcType="DECIMAL" />
+		<result column="sotiroratio" property="sotiroratio" jdbcType="DECIMAL" />
+		<result column="infomationratio" property="infomationratio"
+			jdbcType="DECIMAL" />
+		<result column="return_volatlity" property="returnVolatlity"
+			jdbcType="DECIMAL" />
+		<result column="max_retrace" property="maxRetrace" jdbcType="DECIMAL" />
+		<result column="tracking" property="tracking" jdbcType="DECIMAL" />
+		<result column="downside_risk" property="downsideRisk"
+			jdbcType="DECIMAL" />
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<result column="logarithmic_return" property="logarithmicReturn"
+			jdbcType="DECIMAL" />
+		<result column="relative_return" property="relativeReturn"
+			jdbcType="DECIMAL" />
+		<result column="accumulated_return" property="accumulatedReturn"
+			jdbcType="DECIMAL" />
+		<result column="total_benchmark" property="totalBenchmark"
+			jdbcType="DECIMAL" />
+		<result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+		<result column="test_status" property="testStatus" jdbcType="INTEGER" />
+		<result column="param_name_list" property="paramNameList" jdbcType="VARCHAR" />
+		<result column="param_value_list" property="paramValueList" jdbcType="VARCHAR" />
+		<result column="param_id_list" property="paramIdList" jdbcType="VARCHAR" />
+		<result column="group_id" property="groupId" jdbcType="INTEGER" />
+		
+	</resultMap>
+	
+	<resultMap id="BaseResultMapTTestRecordWithDurationDto" type="com.ujuit.quant.firmoffer.dto.TTestRecordWithTestDurationDto">
+		
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="strategy_id" property="strategyId" jdbcType="INTEGER" />
+		<result column="test_time" property="testTime" jdbcType="TIMESTAMP" />
+		<result column="his_data_start" property="hisDataStart"
+			jdbcType="TIMESTAMP" />
+		<result column="his_data_end" property="hisDataEnd" jdbcType="TIMESTAMP" />
+		<result column="frequency" property="frequency" jdbcType="CHAR" />
+		<result column="ini_funding" property="iniFunding" jdbcType="DECIMAL" />
+		<result column="type" property="type" jdbcType="CHAR" />
+		<result column="test_status" property="testStatus" />
+		<result column="duration" property="duration"  />
+		
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, strategy_id, test_time,end_time, his_data_start, his_data_end,
+		frequency,
+		ini_funding,
+		type
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_test_record
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="queryTestRecordById" resultMap="BaseResultMap"  parameterType="java.lang.String"> 
+		select
+		<include refid="Base_Column_List" />
+		from t_test_record
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 查询某一条 测试记录  附带 状态信息 以及测试所用时间 -->
+	<select id="selectByPrimaryKeyWithDuration" resultMap="BaseResultMapTTestRecordWithDurationDto"
+		parameterType="java.lang.Integer">
+		SELECT ttr.id, ttr.strategy_id, ttr.test_time,ttr.end_time, ttr.his_data_start, ttr.his_data_end, ttr.frequency, ttr.ini_funding, ttr.type ,TIMESTAMPDIFF(SECOND,ttr.test_time,ttr.end_time) duration,case when ttr.end_time is null then 1 else 2 end test_status
+			FROM t_test_record ttr
+			WHERE ttr.id = #{id,jdbcType=INTEGER} 
+	</select>
+
+	<select id="queryTestRecordByStgId" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_test_record
+		where strategy_id = #{StgId}
+		order by test_time desc,id desc  limit 1
+	</select>
+	
+	<select id="queryOfferNum" resultType="java.lang.Integer" parameterType="map" >
+<!-- 	SELECT count(id) sum from t_test_record -->
+<!-- 	WHERE strategy_id=#{StgId} AND -->
+<!-- 	end_time is not null AND type =#{type} -->
+	SELECT count(a.id ) sum FROM (
+	SELECT ttr.id FROM t_test_record ttr
+	LEFT JOIN t_param_group tpg on ttr.id=tpg.backtest_id
+	WHERE ttr.strategy_id=#{StgId} AND ttr.type =#{type} AND ttr.end_time is not null
+	AND tpg.test_status=2 GROUP BY ttr.id
+	) a
+	</select>
+	
+	
+	<select id="queryOfferNumByUserId" resultType="java.lang.Integer" parameterType="map" >
+	SELECT
+	count(a.id) sum
+	FROM
+	(
+	SELECT
+	ttr.id
+	FROM
+	t_test_record ttr
+	LEFT JOIN t_param_group tpg ON ttr.id = tpg.backtest_id
+	LEFT JOIN t_strategy ts ON ts.id=ttr.strategy_id
+	WHERE
+	ts.user_id=#{userId}
+	AND ttr.type =#{type}
+	AND ttr.end_time is not null
+	AND tpg.test_status = 2
+	GROUP BY
+	ttr.id
+	) a
+	</select>
+	
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.TTestRecord">
+		insert into t_test_record (id,
+		strategy_id, test_time,
+		his_data_start, his_data_end, frequency,
+		ini_funding, type)
+		values (#{id,jdbcType=INTEGER},
+		#{strategyId,jdbcType=INTEGER},
+		#{testTime,jdbcType=TIMESTAMP},
+		#{hisDataStart,jdbcType=TIMESTAMP}, #{hisDataEnd,jdbcType=TIMESTAMP},
+		#{frequency,jdbcType=CHAR},
+		#{iniFunding,jdbcType=DECIMAL},
+		#{type,jdbcType=CHAR})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.ujuit.quant.firmoffer.model.TTestRecord">
+		update t_test_record
+		<set>
+			<if test="strategyId != null">
+				strategy_id = #{strategyId,jdbcType=INTEGER},
+			</if>
+			<if test="testTime != null">
+				test_time = #{testTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="hisDataStart != null">
+				his_data_start = #{hisDataStart,jdbcType=TIMESTAMP},
+			</if>
+			<if test="hisDataEnd != null">
+				his_data_end = #{hisDataEnd,jdbcType=TIMESTAMP},
+			</if>
+			<if test="frequency != null">
+				frequency = #{frequency,jdbcType=CHAR},
+			</if>
+			<if test="iniFunding != null">
+				ini_funding = #{iniFunding,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=CHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_test_record
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<!-- 策略的  测试记录列表 -->
+	<select id="queryTestRecordListByStgId" resultMap ="BaseResultMapTestRecordListDto" parameterType="map" >
+			SELECT  ttr.*,MAX(ins.accumulated_return) accumulated_return,2 status
+			from  t_param_group tpg 
+			inner join t_sub_account tsa on tsa.param_group_id = tpg.id  
+			left join income_situation ins on ins.sub_account_id = tsa.id
+			left join t_test_record ttr on ttr.id = tpg.backtest_id 
+			left join (   SELECT MAX(ins2.id) id
+				FROM income_situation ins2
+	    		join t_sub_account tsa2 on ins2.sub_account_id=tsa2.id
+	    		join t_param_group tpg2 on tpg2.id = tsa2.param_group_id
+	    		join (
+					SELECT user_id from t_strategy where id= #{strategyId,jdbcType = VARCHAR}
+				) temp2 on temp2.user_id= tsa2.user_id
+	    		
+				WHERE   tpg2.test_status = 2
+				GROUP BY ins2.sub_account_id) mix on ins.id=mix.id
+			where ttr.strategy_id = #{strategyId,jdbcType = VARCHAR} and ttr.type = #{type,jdbcType = CHAR} and tpg.test_status = 2 and ttr.end_time is not null and (ins.id = mix.id or (ins.id is null and mix.id is null)) 
+			
+			group by ttr.id order by ${orderKey} ${order}
+	</select>
+	
+
+	<!-- 某个测试记录   参数组列表 -->
+	<select id="queryParamGroupList" resultMap="BaseResultMapParamGroupListDto"  parameterType="map">
+		SELECT  ins.*,tpg.test_status,GROUP_CONCAT(trp.param_name) param_name_list,GROUP_CONCAT(IFNULL(trp.param_value,'')) param_value_list,GROUP_CONCAT(cast(trp.id as char)) param_id_list,tpg.id group_id
+		from  t_param_group tpg 
+		inner join t_sub_account tsa on tsa.param_group_id = tpg.id  
+		left join income_situation ins on ins.sub_account_id = tsa.id
+		left join t_record_param trp on trp.group_id =  tpg.id
+		left join (   SELECT MAX(ins2.id) id
+			FROM income_situation ins2
+    		join t_sub_account tsa2 on ins2.sub_account_id=tsa2.id
+    		join t_param_group tpg2 on tpg2.id = tsa2.param_group_id
+			WHERE tpg2.backtest_id = #{testRecordId} and tpg2.test_status = 2
+			GROUP BY ins2.sub_account_id) mix on ins.id=mix.id
+		
+		where tpg.backtest_id = #{testRecordId} and tpg.test_status = 2 
+		and (ins.id = mix.id or (ins.id is null and mix.id is null))
+		group by tpg.id  order by ${orderKey} ${order}
+	</select>
+	
+	<!-- 查询  历史回测 或者  实盘模拟 最新一条 
+	<select id="findLastTestRecordByType" parameterType="map" resultMap="BaseResultMapTestRecordListDto">
+		SELECT  ttr.*,ins.accumulated_return accumulated_return
+			from  t_param_group tpg 
+			left join t_sub_account tsa on tsa.param_group_id = tpg.id  
+			left join income_situation ins on ins.sub_account_id = tsa.id
+			left join t_test_record ttr on ttr.id = tpg.backtest_id 
+			inner join (select MAX(id) id from t_test_record where strategy_id = #{strategyId} and type = #{type}) mix on ttr.id=mix.id
+			where strategy_id = #{strategyId} and type = #{type}
+			order by ins.id DESC LIMIT 1
+			
+	</select> -->
+	
+	<!-- 查询  历史回测 或者  实盘模拟 最新一条 -->
+	<select id="findLastTestRecordByType" parameterType="map" resultMap="BaseResultMapTestRecordListDto">
+			SELECT  ttr.*
+			from  t_test_record ttr
+			inner join (select MAX(id) id from t_test_record where strategy_id = #{strategyId} and type = #{type}) mix on ttr.id=mix.id
+	</select>
+	
+ 	<!-- 找到相关联的子账户 和测试参数组 -->
+	<!-- <select id="findRelatedParamGroup" resultType="java.util.List" parameterType="java.lang.String">
+	
+		SELECT  DISTINCT tsa.id
+		FROM t_param_group tpg 
+		LEFT JOIN t_sub_account tsa on tsa.param_group_id = tpg.id
+		WHERE tpg.backtest_id IN 
+		<foreach item="idItem" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+
+	</select>  -->
+	
+	<!-- 找到相关联的子账户  -->
+	<select id="findRelatedSubAccount" resultType="java.lang.String" parameterType="java.util.List">
+	
+		SELECT  tsa.id
+		FROM t_param_group tpg 
+		LEFT JOIN t_sub_account tsa on tsa.param_group_id = tpg.id
+		WHERE tpg.backtest_id IN 
+		<foreach item="item" collection="list" open="(" separator="," close=")">
+			#{item,jdbcType=INTEGER}
+		</foreach>
+		
+	</select>
+	
+	<!-- 找到相关联的 测试参数组 -->
+	<select id="findRelatedParamGroup" resultType="java.lang.String" parameterType="java.util.List">
+		SELECT  id
+		FROM t_param_group tpg 
+		WHERE tpg.backtest_id IN 
+		<foreach item="item" collection="list" open="(" separator="," close=")">
+			#{item,jdbcType=INTEGER}
+		</foreach>
+	</select>
+	
+	<!-- 根据 主键数组 批量删除 -->
+	<delete id="batchDeleteByPrimaryKeyList" parameterType="java.util.List">
+	
+		DELETE FROM t_test_record
+		WHERE id in
+		<foreach item="id" collection="list" open="(" separator="," close=")">
+			#{id,jdbcType=INTEGER}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,199 @@
+/*重写头部*/
+.header{
+	-webkit-transition: background 0.3s ease-in;
+    -moz-transition: background 0.3s ease-in;
+    -ms-transition: background 0.3s ease-in;
+}
+.scroll{
+	background:#fff;
+}
+.scroll .mindex a.select_btn{
+	color:#008DFF;border-color:#008DFF;
+}
+.header .logo{
+	margin-right:70px;
+}
+/*banner*/
+.bg{
+	color: #fff;
+	text-align: center;
+}
+.bg .t1{
+	font-size: 68px;
+	height: 68px;
+	line-height: 68px;
+	margin: 0 auto;
+	margin-top: 287px;
+	width: 800px;
+}
+.bg .subt1{
+	font-size: 36px;
+	height: 36px;
+	line-height: 36px;
+	margin: 0 auto;
+	margin-top: 48px;
+	width: 800px;
+	font-weight:100;
+}
+.bg .itemw{
+	height: 723px;
+	overflow: hidden;
+	background: url(../../../images/frontend/index/index-bg.png) no-repeat center center;
+}
+/*带图标的左右动画*/
+.item .left{
+	float: left;
+}
+.item .right{
+	float: right;
+}
+.item .letter{
+	width: 700px;
+}
+.item .img{
+	width: 413px;
+} 
+.one{
+	height: 510px;
+	overflow: hidden;
+	
+}
+.one .itemn{
+	position: relative;
+}
+.one .ptitle{
+	color: #008dff;
+	font-size: 36px;
+	height: 36px;
+	line-height: 36px;
+	margin-top: 105px;
+	letter-spacing:8px;
+}
+.one .ptitle:hover{
+	color:#00aeff;
+}
+.one p{
+	font-size: 18px;
+	font-weight: 600;
+	margin-top: 45px;
+
+}
+.one .left,.one .right{
+	overflow: hidden;
+	position: absolute;
+}
+.one .letter div{
+	margin-top: 20px;
+	line-height: 25px;
+	font-size:14px;
+	color:#333333
+}
+.even{
+	background: #f2f5f6;
+}
+
+.item1  .left{
+	top: 106px;
+	left: 0;
+}
+.item1  .right{
+	top: 106px;
+	right:  0;
+}
+
+.item2  .left{
+	top: 124px;
+	left: 0;
+}
+.item2  .right{
+	top: 124px;
+	right:  0;
+}
+
+.item3  .left{
+	top: 128px;
+	left: 0;
+}
+.item3  .right{
+	top: 128px;
+	right:  0;
+}
+.item4  .left{
+	top: 124px;
+	left: 0;
+}
+.item4  .right{
+	top: 124px;
+	right:  0;
+}
+
+/*我们的优势*/
+.advantage {
+	overflow: hidden;
+	height: 812px;
+	background: url(../../../images/frontend/index/youshibg.png) no-repeat center center;
+}
+.advantage .ptitle{
+	font-size: 32px;
+	line-height: 32px;
+	height: 32px;
+	text-align: center;
+	color: #fff;
+	margin-top: 140px;
+	margin-bottom: 128px;
+}
+.advantage ul{
+
+}
+.advantage li{
+	float: left;
+	color: #fff;
+	overflow: hidden;
+}
+.advantage li.first{
+	width: 170px;
+}
+.advantage li.second{
+	width: 526px;
+	text-align: center;
+}
+.advantage li.third{
+	width:172px;
+}
+.advantage li.fourth{
+	width: 170px;
+	margin-left:162px;
+}
+.advantage .title{
+	text-align: center;
+	color: #fff;
+	font-size: 32px;
+	height: 32px;
+	line-height: 32px;
+	margin-bottom: 35px;
+}
+.advantage .content{
+	text-align: left;
+	font-size: 16px;
+	line-height: 22px;
+	font-weight:200
+}
+.advantage .content span{
+	display: block;
+	float: left;
+	height: 22px;
+	line-height: 27px;
+	margin-right: 2px;
+}
+.advantage li.first .content{
+	padding-left: 5px;
+}
+.advantage li.second .content{
+	padding-left: 125px;
+}
+.advantage li.third .content{
+	padding-left: 25px;
+}
+.advantage li.fourth .content{
+	padding-left: 10px;
+}

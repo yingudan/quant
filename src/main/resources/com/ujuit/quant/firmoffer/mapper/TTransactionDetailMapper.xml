@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.TTransactionDetail">
+	<resultMap id="BaseResultMap"
+		type="com.ujuit.quant.firmoffer.model.TTransactionDetail">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="subaccount_id" property="subaccountId"
+			jdbcType="INTEGER" />
+		<result column="stock_name" property="stockName" jdbcType="VARCHAR" />
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<result column="trading_direction" property="tradingDirection"
+			jdbcType="CHAR" />
+		<result column="ave_tran_price" property="aveTranPrice"
+			jdbcType="DECIMAL" />
+		<result column="tran_num" property="tranNum" jdbcType="INTEGER" />
+		<result column="amount" property="amount" jdbcType="DECIMAL" />
+		<result column="cost" property="cost" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<resultMap id="TTransactionDetailHisMap" type="com.ujuit.quant.firmoffer.dto.TransactionDto">
+		<result column="applay_date" property="theTime" jdbcType="TIMESTAMP" />
+		<collection property="ttrList"
+			ofType="com.ujuit.quant.firmoffer.model.TTransactionDetail">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="stockName" property="stockName" jdbcType="VARCHAR" />
+			<result column="applay_time" property="applayTime" jdbcType="TIMESTAMP" />
+			<result column="tradingDirection" property="tradingDirection"
+				jdbcType="VARCHAR" />
+			<result column="aveTranPrice" property="aveTranPrice"
+				jdbcType="DECIMAL" />
+			<result column="tranNum" property="tranNum" jdbcType="INTEGER" />
+			<result column="amount" property="amount" jdbcType="DECIMAL" />
+			<result column="cost" property="cost" jdbcType="DECIMAL" />
+			<result column="stockCode" property="stockCode" jdbcType="DECIMAL" />
+		</collection>
+	</resultMap>
+	<resultMap id="TTransactionSaleMapDto" type="com.ujuit.quant.firmoffer.dto.SaleMapDto">
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<collection property="list"
+			ofType="com.ujuit.quant.firmoffer.model.TTransactionDetail">
+			<id column="id" property="id" jdbcType="INTEGER" />
+			<result column="stockName" property="stockName" jdbcType="VARCHAR" />
+			<result column="applay_time" property="applayTime" jdbcType="TIMESTAMP" />
+			<result column="tradingDirection" property="tradingDirection"
+				jdbcType="VARCHAR" />
+			<result column="aveTranPrice" property="aveTranPrice"
+				jdbcType="DECIMAL" />
+			<result column="tranNum" property="tranNum" jdbcType="INTEGER" />
+			<result column="amount" property="amount" jdbcType="DECIMAL" />
+			<result column="cost" property="cost" jdbcType="DECIMAL" />
+		</collection>
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, subaccount_id, stock_name, time, trading_direction,
+		ave_tran_price,
+		tran_num,
+		amount, cost
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from t_transaction_detail
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="queryStockApplyList" resultType="com.ujuit.dealservice.entity.StockApply"
+		parameterType="map">
+		SELECT
+		sal.id,
+		sal.applay_date applyDate,
+		sal.applay_type applyType,
+		sal.applay_num applayNum,
+		sal.applay_price applyPrice,
+		sal.deal_num dealNum,
+		sal.deal_price dealPrice,
+		sal.applay_user applayUser,
+		sal.cost,
+		sal.total_deal_num totalDealNum,
+		sal.total_deal_money totalDealMoney,
+		sal.stock_code  stockCode
+		FROM stock_applay_list sal
+		WHERE (sal.applay_status=0 or sal.applay_status=2)
+		<if test="subAccountId!=null and subAccountId!=''">
+			AND sal.applay_user=#{subAccountId}
+		</if>
+		<if test="applayType!=null and applayType!=''">
+			AND sal.applay_type=#{applayType}
+		</if>
+	</select>
+
+	<select id="queryOrderRelation" resultType="com.ujuit.dealservice.entity.StockApply"
+		parameterType="map">
+		SELECT sal.id,
+		sal.applay_date applyDate,
+		sal.applay_type applyType,
+		sal.applay_num applayNum,
+		sal.applay_price applyPrice,
+		tor.dealNum dealNum,
+		sal.deal_price dealPrice,
+		sal.applay_user applayUser,
+		sal.cost
+		FROM  stock_applay_list sal
+		JOIN (  SELECT  tor.order_id id,tor.deal_number dealNum  FROM
+		t_order_relation tor  JOIN stock_applay_list sal 
+		ON sal.id = tor.apply_id
+		WHERE   sal.id =#{applyId}  
+		) tor ON tor.id = sal.id
+		
+<!-- 		WHERE  (sal.applay_status=0 or sal.applay_status=2)  -->
+<!-- 		AND  sal.applay_type =2 -->
+	</select>
+
+	<select id="queryStockApplyById" resultType="com.ujuit.dealservice.entity.StockApply"
+		parameterType="java.lang.Integer" >
+		SELECT
+		sal.id,
+		sal.applay_date applyDate,
+		sal.applay_type applyType,
+		sal.applay_num applayNum,
+		sal.applay_price applyPrice,
+		sal.deal_num dealNum,
+		sal.deal_price dealPrice,
+		sal.applay_user applayUser,
+		sal.cost
+		FROM stock_applay_list sal
+		WHERE sal.id=#{id}
+	</select>
+
+
+	<select id="findHisTransactionList" resultMap="TTransactionDetailHisMap"
+		parameterType="map">
+		SELECT sal.id id,sal.stock_name
+		stockName,sal.applay_date,sal.applay_time,
+		sal.applay_type
+		tradingDirection,sal.deal_price aveTranPrice,sal.deal_num tranNum,
+		sal.total_deal_money amount,sal.cost cost,sal.stock_code stockCode
+		FROM stock_applay_list sal
+		RIGHT JOIN t_sub_account tsa ON
+		sal.applay_user=tsa.id
+		RIGHT JOIN
+		t_param_group tpg ON
+		tsa.param_group_id=tpg.id
+		RIGHT JOIN t_test_record
+		ttr ON
+		ttr.id=tpg.backtest_id
+		<where>
+			(sal.applay_status=0 or sal.applay_status=2)
+			<if test="status!=null and status!=''">
+				AND tpg.test_status=#{status}
+			</if>
+			<if test="groupId!=null and groupId!=''">
+				AND tpg.id=#{groupId}
+			</if>
+			<if test="testId!=null and testId!=''">
+				AND ttr.id=#{testId}
+			</if>
+			<if test="startTime !=null ">
+			<![CDATA[ and sal.applay_date >= #{startTime} ]]>
+			</if>
+			<if test="endTime !=null ">
+			<![CDATA[ and sal.applay_date <= #{endTime} ]]>
+			</if>
+		</where>
+		ORDER BY sal.applay_date,sal.applay_time
+	</select>
+
+	<select id="findSaleMap" resultMap="TTransactionSaleMapDto"
+		parameterType="map">
+		SELECT sum(sal.total_deal_money) amount,sum(sal.cost)
+		cost,sal.applay_date time,sal.applay_type tradingDirection
+		FROM
+		stock_applay_list sal
+		RIGHT JOIN t_sub_account tsa on
+		tsa.id=sal.applay_user
+		JOIN t_param_group tpg ON
+		tsa.param_group_id=tpg.id
+		JOIN t_test_record ttr ON
+		ttr.id=tpg.backtest_id
+		WHERE
+		(sal.applay_status=0 or
+		sal.applay_status=2)
+		<if test="groupId!=null and groupId!=''">
+			AND tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			and tpg.test_status=#{status}
+		</if>
+		<if test="testId!=null and testId!=''">
+			and ttr.id=#{testId}
+		</if>
+		<!-- <if test="beginDate !=null "> -->
+		<!-- <![CDATA[ and sal.applay_date >=#{beginDate} ]]> -->
+		<!-- </if> -->
+		<!-- <if test="endDate !=null "> -->
+		<!-- <![CDATA[ and sal.applay_date <=#{endDate} ]]> -->
+		<!-- </if> -->
+		GROUP BY sal.applay_date,sal.applay_type
+	</select>
+
+	<select id="findNowTransactionList" resultType="com.ujuit.quant.firmoffer.model.TTransactionDetail"
+		parameterType="map">
+		SELECT sal.id id,sal.stock_name
+		stockName,sal.applay_date
+		applayDate,sal.applay_time applayTime,
+		sal.applay_type
+		tradingDirection,sal.deal_price aveTranPrice,sal.total_deal_num
+		tranNum,
+		sal.total_deal_money amount,sal.cost cost
+		FROM
+		stock_applay_list sal
+		RIGHT JOIN t_sub_account tsa on
+		tsa.id=sal.applay_user
+		RIGHT JOIN
+		t_param_group tpg ON
+		tsa.param_group_id=tpg.id
+		RIGHT JOIN t_test_record
+		ttr ON
+		ttr.id=tpg.backtest_id
+		WHERE
+		(sal.applay_status=0 or
+		sal.applay_status=2)
+		AND ttr.id=#{testId}
+		<if test="beginDate !=null ">
+        		 <![CDATA[ and  date_format(sal.applay_date, '%Y-%m-%d')  >=  #{beginDate,jdbcType=DATE}  ]]>
+		</if>
+		<if test="endDate !=null ">
+      	 		  <![CDATA[ and  date_format(sal.applay_date, '%Y-%m-%d') <=  #{endDate,jdbcType=DATE}  ]]>
+		</if>
+	</select>
+
+	<select id="findNowTtrDetail" resultType="com.ujuit.quant.firmoffer.model.TTransactionDetail"
+		parameterType="map">
+		SELECT sal.id id,sal.stock_name
+		stockName,sal.applay_date
+		applayDate,sal.applay_time applayTime,
+		sal.applay_type
+		tradingDirection,sal.deal_price aveTranPrice,sal.total_deal_num
+		tranNum,
+		sal.total_deal_money amount,sal.cost cost,sal.stock_code
+		stockCode
+		FROM stock_applay_list sal
+		RIGHT JOIN t_sub_account tsa on
+		tsa.id=sal.applay_user
+		RIGHT JOIN
+		t_param_group tpg ON
+		tsa.param_group_id=tpg.id
+		RIGHT JOIN t_test_record
+		ttr ON
+		ttr.id=tpg.backtest_id
+		WHERE
+		(sal.applay_status=0 or sal.applay_status=2
+		or sal.applay_status=1)
+		AND ttr.id=#{testId}
+		<if test="startTime !=null ">
+        		 <![CDATA[ and date_format(sal.applay_date, '%Y-%m-%d')  >=  #{startTime ,jdbcType=DATE }  ]]>
+		</if>
+		<if test="endTime !=null ">
+      	 		  <![CDATA[ and date_format(sal.applay_date, '%Y-%m-%d') <=  #{endTime,jdbcType=DATE }  ]]>
+		</if>
+	</select>
+
+	<select id="findTransactionMap" resultType="com.ujuit.quant.firmoffer.model.TTransactionDetail"
+		parameterType="map">
+		SELECT sum(sal.total_deal_money) amount,sal.applay_date
+		time,sal.applay_type tradingDirection
+		FROM stock_applay_list sal
+		RIGHT
+		JOIN t_sub_account tsa on tsa.id=sal.applay_user
+		JOIN t_param_group tpg
+		ON tsa.param_group_id=tpg.id
+		WHERE
+		(sal.applay_status=0 or
+		sal.applay_status=2)
+		<if test="groupId!=null and groupId!=''">
+			AND tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			and tpg.test_status=#{status}
+		</if>
+		<!-- <if test="beginDate !=null "> -->
+		<!-- <![CDATA[ and sal.applay_date >=#{beginDate} ]]> -->
+		<!-- </if> -->
+		<!-- <if test="endDate !=null "> -->
+		<!-- <![CDATA[ and sal.applay_date <=#{endDate} ]]> -->
+		<!-- </if> -->
+		GROUP BY sal.applay_date,sal.applay_type
+	</select>
+
+
+
+	<select id="findTransactionList" resultType="com.ujuit.quant.firmoffer.model.TTransactionDetail"
+		parameterType="map">
+		SELECT sal.id id,sal.stock_name
+		stockName,sal.applay_date,sal.applay_time,
+		sal.applay_type
+		tradingDirection,sal.deal_price aveTranPrice,sal.deal_num tranNum,
+		sal.total_deal_money amount,sal.cost cost
+		FROM stock_applay_list sal
+		<where>
+			sal.applay_user = (
+			SELECT tsa.id FROM
+			t_sub_account tsa
+			JOIN
+			t_param_group tpg ON tsa.param_group_id=tpg.id
+			WHERE tpg.id=#{groupId}
+			)
+			AND (sal.applay_status=0 or sal.applay_status=2)
+			<if test="beginDate !=null ">
+        		 <![CDATA[ and sal.applay_date  >=  #{beginDate}  ]]>
+			</if>
+			<if test="endDate !=null ">
+      	 		  <![CDATA[ and sal.applay_date <=  #{endDate}  ]]>
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.TTransactionDetail">
+		insert into
+		t_transaction_detail (id, subaccount_id, stock_name,
+		time,
+		trading_direction, ave_tran_price,
+		tran_num, amount, cost
+		)
+		values
+		(#{id,jdbcType=INTEGER}, #{subaccountId,jdbcType=INTEGER},
+		#{stockName,jdbcType=VARCHAR},
+		#{time,jdbcType=TIMESTAMP},
+		#{tradingDirection,jdbcType=CHAR}, #{aveTranPrice,jdbcType=DECIMAL},
+		#{tranNum,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL},
+		#{cost,jdbcType=DECIMAL}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.ujuit.quant.firmoffer.model.TTransactionDetail">
+		update t_transaction_detail
+		<set>
+			<if test="subaccountId != null">
+				subaccount_id = #{subaccountId,jdbcType=INTEGER},
+			</if>
+			<if test="stockName != null">
+				stock_name = #{stockName,jdbcType=VARCHAR},
+			</if>
+			<if test="time != null">
+				time = #{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="tradingDirection != null">
+				trading_direction = #{tradingDirection,jdbcType=CHAR},
+			</if>
+			<if test="aveTranPrice != null">
+				ave_tran_price = #{aveTranPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="tranNum != null">
+				tran_num = #{tranNum,jdbcType=INTEGER},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="cost != null">
+				cost = #{cost,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		t_transaction_detail
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<!-- 根据 子账户数组 批量删除 -->
+	<delete id="batchDeleteBySubAccountIdList" parameterType="java.util.List">
+		DELETE FROM t_transaction_detail
+		WHERE subaccount_id IN
+		<foreach item="id" collection="list" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

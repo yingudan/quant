@@ -1,0 +1,113 @@
+/*重写head*/
+.scroll .menu .on,.scroll .menu a:hover{
+	color:#008DFF;border-color:#008DFF;
+}
+.header .logo{
+	margin-right:110px;	
+}
+.main{
+	padding-top:57px;
+	overflow:hidden;
+}
+
+/**链接到外站的部分*/
+.outerweb{
+	height:368px;
+	width:100%;
+	background:url(../../images/frontend/doc/down_bg.png) no-repeat center center;
+	overflow:hidden;
+	
+}
+.outerweb p{
+	text-align:center;
+	font-size:24px;
+	height:30px;
+	line-height:30px;
+	margin-top:77px;
+	color:#fff;
+}
+.outerweb p.t1{
+	font-size:36px;
+	line-height:36px;
+	font-weight:600;
+	margin-top:107px;
+}
+.outerweb p.t2{
+	font-size:18px;
+	font-weight:600;
+	lien-height:18px;
+	margin-top:22px;
+}
+.outerweb a{
+	display:block;
+	height:48px;
+	line-height:48px;
+	text-align:center;
+	width:154px;
+	background:url(../../images/frontend/strategy/s_btn_154.png) no-repeat center center;
+	margin:0 auto;
+	margin-top:30px;
+	font-size:18px;
+	color:#fff;
+}
+.fileitem{
+	overflow:hidden;
+	margin:49px auto;
+}
+.fileitem .filename{
+	font-size:24px;
+	color:#525252;
+}
+.fileitem i{
+	display:block;
+	width:83px;
+	height:95px;
+	float:left;
+	margin-right:38px;
+}
+.fileitem>div{
+	width:900px;
+	float:left;
+}
+.fileitem >a{
+	dispaly:block;
+	width:152px;
+	height:46px;
+	line-height:48px;
+	text-align:center;
+	font-size:18px;
+	color:#fb7203;
+	float:right;
+	background:#fff;
+	border:1px solid #fb7203;
+	border-radius:19px;
+	margin-top:21px;
+}
+.fileitem >a:hover{
+	color:#fff;
+	background:#fb7203;
+}
+.pdf i{
+	background:url(../../images/frontend/doc/pdf.png) no-repeat center center;
+}
+.pdf{
+	margin-top:128px;
+}
+.file{
+	padding-top:49px;
+	border-top:1px solid #ccc;
+	margin-bottom:283px;
+}
+.file i{
+	background:url(../../images/frontend/doc/doc.png) no-repeat center center;
+}
+.fileitem .filesize,.fileitem .filetime{
+	font-size:14px;
+	color:#7f7f7f
+}
+.fileitem .filesize{
+	margin-top:14px;
+}
+.fileitem .filetime{
+	margin-top:4px;
+}

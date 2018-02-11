@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.IncomeSituation">
+	<resultMap id="BaseResultMap"
+		type="com.ujuit.quant.firmoffer.model.IncomeSituation">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="sub_account_id" property="subAccountId"
+			jdbcType="INTEGER" />
+		<result column="profit" property="profit" jdbcType="DECIMAL" />
+		<result column="yield" property="yield" jdbcType="DECIMAL" />
+		<result column="benchmark" property="benchmark" jdbcType="DECIMAL" />
+		<result column="alpha" property="alpha" jdbcType="DECIMAL" />
+		<result column="beta" property="beta" jdbcType="DECIMAL" />
+		<result column="shapratio" property="shapratio" jdbcType="DECIMAL" />
+		<result column="sotiroratio" property="sotiroratio" jdbcType="DECIMAL" />
+		<result column="infomationratio" property="infomationratio"
+			jdbcType="DECIMAL" />
+		<result column="return_volatlity" property="returnVolatlity"
+			jdbcType="DECIMAL" />
+		<result column="max_retrace" property="maxRetrace" jdbcType="DECIMAL" />
+		<result column="tracking" property="tracking" jdbcType="DECIMAL" />
+		<result column="downside_risk" property="downsideRisk"
+			jdbcType="DECIMAL" />
+		<result column="time" property="time" jdbcType="TIMESTAMP" />
+		<result column="logarithmic_return" property="logarithmicReturn"
+			jdbcType="DECIMAL" />
+		<result column="relative_return" property="relativeReturn"
+			jdbcType="DECIMAL" />
+		<result column="accumulated_return" property="accumulatedReturn"
+			jdbcType="DECIMAL" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, sub_account_id, profit, yield, benchmark, alpha, beta,
+		shapratio,
+		sotiroratio,
+		infomationratio, return_volatlity, max_retrace,
+		tracking, downside_risk, time,
+		logarithmic_return,
+		relative_return,
+		accumulated_return, create_time
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from income_situation
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<select id="queryInsTheMaxProfit" resultType="com.ujuit.quant.firmoffer.model.IncomeSituation"
+		parameterType="map">
+		SELECT
+		ins.accumulated_return accumulatedReturn,
+		ins.id,
+		ins.sub_account_id subAccountId,
+		ins.profit,
+		ins.yield,
+		ins.benchmark,
+		ins.alpha,
+		ins.beta,
+		ins.shapratio,
+		ins.sotiroratio,
+		ins.infomationratio,
+		ins.return_volatlity returnVolatlity,
+		ins.max_retrace maxRetrace,
+		ins.tracking,
+		ins.downside_risk downsideRisk,
+		ins.time,
+		ins.logarithmic_return logarithmicReturn,
+		ins.relative_return
+		relativeReturn,
+		ins.create_time createTime
+		FROM
+		income_situation ins
+		JOIN
+		t_sub_account tsa ON tsa.id = ins.sub_account_id
+		JOIN t_param_group tpg
+		ON tpg.id = tsa.param_group_id
+		JOIN t_test_record ttr ON ttr.id =
+		tpg.backtest_id
+		WHERE
+		ttr.id=(SELECT ttr.id FROM t_test_record ttr
+		LEFT
+		JOIN t_param_group tpg ON ttr.id=tpg.backtest_id
+		WHERE ttr.type=0 AND
+		ttr.strategy_id=#{strategyId}
+		AND ttr.end_time is not null AND
+		tpg.test_status=2
+		ORDER BY ttr.test_time desc LIMIT 1 )
+		ORDER BY
+		ins.accumulated_return,ins.create_time desc LIMIT 1
+	</select>
+
+	<select id="findTheNowIncomeSituation" resultType="com.ujuit.quant.firmoffer.dto.IncomeNowSituationDto"
+		parameterType="map">
+		SELECT
+		tmi.profit,
+		tmi.yield,
+		tmi.benchmark_return benchmark,
+		tmi.accumulated_return accumulatedReturn,
+		tmi.max_retrace maxRetrace,
+		tmi.create_time createTime
+		FROM
+		t_min_income tmi
+		LEFT JOIN t_sub_account
+		tsa ON
+		tmi.sub_account_id=tsa.id
+		LEFT JOIN t_param_group tpg ON tpg.id =
+		tsa.param_group_id
+		LEFT JOIN t_test_record ttr ON ttr.id =
+		tpg.backtest_id
+		<where>
+			ttr.id=#{testId} and ttr.strategy_id=#{strategyId}
+		</where>
+		ORDER BY tmi.create_time DESC LIMIT 1
+	</select>
+
+
+	<select id="findBySubAccountId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from income_situation
+		where sub_account_id = #{id,jdbcType=INTEGER}
+		ORDER BY create_time DESC LIMIT 1
+	</select>
+
+
+
+
+
+	<select id="findNowIncomeSituation" resultType="com.ujuit.quant.firmoffer.dto.IncomeNowSituationDto"
+		parameterType="map">
+		select ins.id, ins.sub_account_id subAccountId, ins.profit,
+		ins.yield,
+		ins.benchmark, ins.alpha,
+		ins.beta, ins.shapratio,
+		ins.sotiroratio,
+		ins.infomationratio, ins.return_volatlity returnVolatlity,
+		ins.max_retrace maxRetrace,
+		ins.tracking,
+		ins.downside_risk
+		downsideRisk,
+		ins.time,
+		ins.logarithmic_return logarithmicReturn,
+		ins.relative_return
+		relativeReturn,
+		ins.accumulated_return
+		accumulatedReturn,
+		ins.create_time createTime
+		FROM
+		income_situation ins
+		LEFT JOIN t_sub_account tsa ON ins.sub_account_id=tsa.id
+		LEFT JOIN
+		t_param_group tpg ON tpg.id = tsa.param_group_id
+		LEFT JOIN
+		t_test_record ttr ON ttr.id = tpg.backtest_id
+		<where>
+			ttr.id=#{testId} and ttr.strategy_id=#{strategyId}
+		</where>
+		ORDER BY ins.create_time DESC LIMIT 1
+	</select>
+
+
+	<select id="findSituationByDate" resultType="com.ujuit.quant.firmoffer.dto.IncomeNowSituationDto"
+		parameterType="map">
+		select ins.profit,ins.yield,
+		ins.benchmark, ins.alpha,
+		ins.beta,
+		ins.shapratio,
+		ins.sotiroratio,
+		ins.infomationratio,
+		ins.return_volatlity returnVolatlity,
+		ins.max_retrace maxRetrace,
+		ins.tracking,
+		ins.downside_risk
+		downsideRisk,
+		ins.time,
+		ins.logarithmic_return logarithmicReturn,
+		ins.relative_return
+		relativeReturn,
+		ins.accumulated_return
+		accumulatedReturn,
+		ins.create_time createTime
+		FROM
+		income_situation ins
+		WHERE
+		ins.sub_account_id=#{subAccountId}
+		<if test="date!=null">
+			AND ins.time=#{date}
+		</if>
+		<if test="smallDate!=null">
+			  <![CDATA[ AND ins.time<#{smallDate}  ]]>
+		</if>
+		ORDER BY ins.time DESC LIMIT 1
+	</select>
+
+
+
+	<select id="findHisIncomeSituationBygroupId" resultType="com.ujuit.quant.firmoffer.model.IncomeSituation"
+		parameterType="map">
+		select ins.sub_account_id subAccountId, ins.profit,
+		ins.yield, ins.benchmark, ins.alpha,
+		ins.beta, ins.shapratio,
+		ins.sotiroratio,
+		ins.infomationratio, ins.return_volatlity
+		returnVolatlity, ins.max_retrace maxRetrace,
+		ins.tracking,
+		ins.downside_risk downsideRisk, ins.time,
+		ins.logarithmic_return
+		logarithmicReturn,
+		ins.relative_return relativeReturn,
+		ins.accumulated_return accumulatedReturn,
+		ins.create_time createTime,
+		ins.total_benchmark totalBenchmark
+		FROM
+		income_situation ins where
+		ins.sub_account_id =
+		(
+		SELECT tsa.id FROM t_sub_account tsa
+		join
+		t_param_group tpg ON tpg.id= tsa.param_group_id
+		where
+		tpg.id=#{groupId}
+		)
+		ORDER BY ins.time desc LIMIT 1
+	</select>
+
+	<select id="findHisIncomeSituation" resultType="com.ujuit.quant.firmoffer.model.IncomeSituation"
+		parameterType="map">
+		select ins.id, ins.sub_account_id subAccountId, ins.profit,
+		ins.yield,
+		ins.benchmark, ins.alpha,
+		ins.beta, ins.shapratio,
+		ins.sotiroratio,
+		ins.infomationratio, ins.return_volatlity returnVolatlity,
+		ins.max_retrace maxRetrace,
+		ins.tracking,
+		ins.downside_risk
+		downsideRisk, ins.time,
+		ins.logarithmic_return logarithmicReturn,
+		ins.relative_return relativeReturn,
+		ins.accumulated_return
+		accumulatedReturn,
+		ins.create_time createTime,
+		ins.total_benchmark
+		totalBenchmark
+		FROM
+		income_situation ins
+		join (
+		SELECT
+		tsa.id
+		FROM
+		t_sub_account tsa
+		JOIN t_param_group tpg ON tsa.param_group_id = tpg.id
+		LEFT JOIN
+		t_test_record ttr ON ttr.id = tpg.backtest_id
+		WHERE
+		ttr.id =
+		#{testId}
+		AND ttr.strategy_id=#{strategyId}
+		<if test="status!=null and status!=''">
+			AND tpg.test_status=#{status}
+		</if>
+		<if test="startTime !=null ">
+        	 <![CDATA[ and ttr.his_data_start  >=  #{startTime}  ]]>
+		</if>
+		<if test="endTime !=null ">
+     	    <![CDATA[ and ttr.his_data_end <=  #{endTime}  ]]>
+		</if>
+		) temp
+		on temp.id=ins.sub_account_id
+
+
+
+		ORDER BY ins.create_time desc LIMIT
+		1
+	</select>
+
+	<insert id="insert" parameterType="com.ujuit.quant.firmoffer.model.IncomeSituation">
+		insert into income_situation
+		(id, sub_account_id, profit,
+		yield, benchmark, alpha,
+		beta, shapratio,
+		sotiroratio,
+		infomationratio, return_volatlity, max_retrace,
+		tracking,
+		downside_risk, time,
+		logarithmic_return, relative_return,
+		accumulated_return,
+		create_time)
+		values
+		(#{id,jdbcType=INTEGER},
+		#{subAccountId,jdbcType=INTEGER},
+		#{profit,jdbcType=DECIMAL},
+		#{yield,jdbcType=DECIMAL},
+		#{benchmark,jdbcType=DECIMAL},
+		#{alpha,jdbcType=DECIMAL},
+		#{beta,jdbcType=DECIMAL},
+		#{shapratio,jdbcType=DECIMAL},
+		#{sotiroratio,jdbcType=DECIMAL},
+		#{infomationratio,jdbcType=DECIMAL},
+		#{returnVolatlity,jdbcType=DECIMAL}, #{maxRetrace,jdbcType=DECIMAL},
+		#{tracking,jdbcType=DECIMAL}, #{downsideRisk,jdbcType=DECIMAL},
+		#{time,jdbcType=TIMESTAMP},
+		#{logarithmicReturn,jdbcType=DECIMAL},
+		#{relativeReturn,jdbcType=DECIMAL},
+		#{accumulatedReturn,jdbcType=DECIMAL},
+		#{createTime,jdbcType=TIMESTAMP})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.ujuit.quant.firmoffer.model.IncomeSituation">
+		update income_situation
+		<set>
+			<if test="subAccountId != null">
+				sub_account_id = #{subAccountId,jdbcType=INTEGER},
+			</if>
+			<if test="profit != null">
+				profit = #{profit,jdbcType=DECIMAL},
+			</if>
+			<if test="yield != null">
+				yield = #{yield,jdbcType=DECIMAL},
+			</if>
+			<if test="benchmark != null">
+				benchmark = #{benchmark,jdbcType=DECIMAL},
+			</if>
+			<if test="alpha != null">
+				alpha = #{alpha,jdbcType=DECIMAL},
+			</if>
+			<if test="beta != null">
+				beta = #{beta,jdbcType=DECIMAL},
+			</if>
+			<if test="shapratio != null">
+				shapratio = #{shapratio,jdbcType=DECIMAL},
+			</if>
+			<if test="sotiroratio != null">
+				sotiroratio = #{sotiroratio,jdbcType=DECIMAL},
+			</if>
+			<if test="infomationratio != null">
+				infomationratio = #{infomationratio,jdbcType=DECIMAL},
+			</if>
+			<if test="returnVolatlity != null">
+				return_volatlity = #{returnVolatlity,jdbcType=DECIMAL},
+			</if>
+			<if test="maxRetrace != null">
+				max_retrace = #{maxRetrace,jdbcType=DECIMAL},
+			</if>
+			<if test="tracking != null">
+				tracking = #{tracking,jdbcType=DECIMAL},
+			</if>
+			<if test="downsideRisk != null">
+				downside_risk = #{downsideRisk,jdbcType=DECIMAL},
+			</if>
+			<if test="time != null">
+				time = #{time,jdbcType=TIMESTAMP},
+			</if>
+			<if test="logarithmicReturn != null">
+				logarithmic_return =
+				#{logarithmicReturn,jdbcType=DECIMAL},
+			</if>
+			<if test="relativeReturn != null">
+				relative_return = #{relativeReturn,jdbcType=DECIMAL},
+			</if>
+			<if test="accumulatedReturn != null">
+				accumulated_return =
+				#{accumulatedReturn,jdbcType=DECIMAL},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		income_situation
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+
+	<!-- 根据 子账户数组 批量删除 -->
+	<delete id="batchDeleteBySubAccountIdList" parameterType="java.util.List">
+
+		DELETE FROM income_situation
+		WHERE sub_account_id in
+		<foreach item="id" collection="list" open="(" separator=","
+			close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

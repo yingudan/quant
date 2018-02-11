@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ujuit.quant.firmoffer.model.DailyAssets">
+	
+	<!-- 根据 子账户数组 批量删除 -->
+	<delete id="batchDeleteBySubAccountIdList" parameterType="java.util.List">
+	
+		DELETE FROM daily_assets 
+		WHERE sub_account_id in
+		<foreach item="id" collection="list" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+<select id="findDailyAssetsByTestId" resultType="com.ujuit.quant.firmoffer.model.DailyAssets" parameterType="map" >
+	SELECT da.money FROM daily_assets da
+	JOIN t_sub_account tsa ON da.sub_account_id = tsa.id
+	JOIN t_param_group tpg
+	ON tsa.param_group_id = tpg.id
+	JOIN t_test_record ttr ON ttr.id = tpg.backtest_id
+	where ttr.id=#{testId}
+	 <![CDATA[ and da.time=#{thedate}  ]]>
+	 ORDER BY  da.time,da.id  DESC   LIMIT 1 
+</select>
+
+<select id="findTSubAccount" resultType="com.ujuit.quant.firmoffer.model.TSubAccount" parameterType="map" >
+	SELECT tsa.money_total moneyTotal,tsa.surplus_money  surplusMoney FROM  t_sub_account tsa 
+	JOIN t_param_group tpg ON tsa.param_group_id = tpg.id
+	JOIN t_test_record ttr ON ttr.id =tpg.backtest_id
+	WHERE ttr.id=#{testId} AND  ttr.strategy_id=#{strategyId}
+	 ORDER BY  tsa.create_time  DESC   LIMIT 1 
+</select>
+
+<select id="allDaList"  resultType="com.ujuit.quant.firmoffer.model.DailyAssets" parameterType="map">
+	SELECT  da.money,da.time FROM  daily_assets da
+	JOIN t_param_group tpg ON tpg.id = da.sub_account_id
+	JOIN t_test_record ttr ON ttr.id =tpg.backtest_id
+	WHERE ttr.id=#{testId} AND  ttr.strategy_id=#{strategyId}
+</select>
+
+<select id="findDailyAssetsByGroupId" resultType="com.ujuit.quant.firmoffer.model.DailyAssets" parameterType="map" >
+	SELECT da.money FROM  daily_assets da  WHERE da.sub_account_id=#{groupId}
+ 	 <![CDATA[ and da.time=#{thedate}  ]]>
+	 ORDER BY  da.time,da.id  DESC   LIMIT 1 
+</select>
+
+<select id="findDailyAssetsByTime" resultType="com.ujuit.quant.firmoffer.model.DailyAssets"
+	parameterType="map">
+	SELECT da.money FROM  daily_assets da  WHERE da.sub_account_id in( 
+	SELECT tsa.id FROM t_sub_account tsa JOIN
+	t_param_group tpg ON tsa.param_group_id=tpg.id
+	LEFT JOIN t_test_record ttr on ttr.id=tpg.backtest_id
+	WHERE ttr.id=#{testId} and ttr.strategy_id=#{strategyId}
+) 
+         <![CDATA[ and da.time=#{time}  ]]>
+    GROUP BY da.id  ORDER BY time DESC LIMIT 1
+</select>
+
+<select id="findBfDailyAssetsByGroupId" resultType="com.ujuit.quant.firmoffer.model.DailyAssets" parameterType="map" >
+	SELECT da.money  FROM  daily_assets da 
+	 WHERE da.sub_account_id=#{groupId}
+ 	 <![CDATA[ and da.time<#{thedate}  ]]>
+	 GROUP BY da.id  ORDER BY time DESC LIMIT 1
+</select>
+
+<select id="findDailyAssetsMap" resultType="com.ujuit.quant.firmoffer.model.DailyAssets" parameterType="map" >
+	SELECT
+	da1.money,da1.id,da1.time,
+ (da1.money - da2.money) AS gapMoney
+	FROM (SELECT da.money,da.id,da.time,
+	@rownum:=@rownum+1 AS rownum
+ from (SELECT @rownum:=0) da, daily_assets da 
+	JOIN t_sub_account tsa ON tsa.id=da.sub_account_id
+	JOIN t_param_group tpg ON tsa.param_group_id=tpg.id
+	JOIN t_test_record ttr ON ttr.id=tpg.backtest_id
+	WHERE ttr.id=#{testId} AND  ttr.strategy_id=#{strategyId}
+		<if test="groupId!=null and groupId!=''">
+			AND  tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			AND tpg.test_status=#{status}
+		</if>
+	) da1
+				LEFT   JOIN
+	(
+	SELECT da.money,da.id,
+		@num:=@num+1 AS num
+	from (SELECT @num:=0) da,daily_assets da
+	JOIN t_sub_account tsa ON tsa.id=da.sub_account_id
+	JOIN t_param_group tpg ON tsa.param_group_id=tpg.id
+	JOIN t_test_record ttr ON ttr.id=tpg.backtest_id
+	WHERE ttr.id=#{testId} AND  ttr.strategy_id=#{strategyId}
+		<if test="groupId!=null and groupId!=''">
+			AND  tpg.id=#{groupId}
+		</if>
+		<if test="status!=null and status!=''">
+			AND tpg.test_status=#{status}
+		</if>
+	 ) da2
+	ON da1.rownum = da2.num+1   
+</select>
+
+<!--tpg.test_status=1保证是运作中的那条记录  -->
+<select  id="findDailyAssetsBfTheTime" resultType="com.ujuit.quant.firmoffer.model.DailyAssets" parameterType="map">
+	SELECT da.money FROM  daily_assets da  WHERE 
+	  da.sub_account_id in (
+	 SELECT tsa.id FROM t_sub_account tsa JOIN
+	t_param_group tpg ON tsa.param_group_id=tpg.id
+	LEFT JOIN t_test_record ttr on ttr.id=tpg.backtest_id
+	WHERE ttr.id=#{testId} and ttr.strategy_id=#{strategyId}
+	 )
+	  <![CDATA[ and da.time<#{time}  ]]>
+	 GROUP BY da.id  ORDER BY time DESC LIMIT 1
+</select>
+
+</mapper>
